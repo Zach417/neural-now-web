@@ -1,0 +1,54 @@
+{
+  "name": "neural-now-web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node boot.js",
+    "build": "browserify -t reactify client/js/app.anonymous.jsx -t envify --NODE_ENV development | uglifyjs --compress --mangle > client/build/bundle.anonymous.js && browserify -t reactify client/js/app.jsx -t envify --NODE_ENV development | uglifyjs --compress --mangle > client/build/bundle.js",
+    "build-anonymous": "browserify -t reactify client/js/app.anonymous.jsx -t envify --NODE_ENV development | uglifyjs --compress --mangle > client/build/bundle.anonymous.js",
+    "build-authorized": "browserify -t reactify client/js/app.jsx -t envify --NODE_ENV development | uglifyjs --compress --mangle > client/build/bundle.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zach417/neural-now-web.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zach417/neural-now-web/issues"
+  },
+  "homepage": "https://github.com/Zach417/neural-now-web#readme",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "connect-mongo": "^1.1.0",
+    "connect-multiparty": "^2.0.0",
+    "cookie-parser": "^1.4.1",
+    "events": "^1.1.0",
+    "express": "^4.13.4",
+    "express-session": "^1.13.0",
+    "flux": "^2.1.1",
+    "griddle-react": "^0.5.1",
+    "history": "^2.0.0",
+    "jquery": "^2.2.1",
+    "keymirror": "^0.1.1",
+    "moment": "^2.11.2",
+    "object-assign": "^4.0.1",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-router": "^2.0.0",
+    "s3fs": "^2.4.7",
+    "string": "^3.3.1"
+  },
+  "devDependencies": {
+    "browserify": "^12.0.2",
+    "envify": "^4.0.0",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-rename": "^1.2.2",
+    "reactify": "^1.1.1",
+    "uglify-js": "^2.6.2"
+  }
+}
