@@ -9,7 +9,7 @@ var IndexRoute = require('react-router').IndexRoute;
 var App = React.createClass({
   render: function() {
     return (
-      <div>
+    	<div className="container">
         {this.props.children}
       </div>
     )
