@@ -13,8 +13,8 @@ module.exports = {
   },
 
   item: {
-    fontSize: "20px",
-    padding: "12px 5px",
+    fontSize: "24px",
+    padding: "12px 8px",
     float: "right",
     color: "white",
   }

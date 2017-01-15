@@ -8,6 +8,8 @@ var IndexRoute = require('react-router').IndexRoute;
 var Footer = require('./components/Footer/Index.jsx');
 var Header = require('./components/Header.Anonymous/Index.jsx');
 var Home = require('./components/Home.Anonymous/Index.jsx');
+var About = require('./components/About.Anonymous/Index.jsx');
+var Nav = require('./components/Nav.Anonymous/Index.jsx');
 var SignIn = require('./components/SignIn/Index.jsx');
 var Docs = require('./components/Docs/Index.jsx');
 var NeuralNets = require('./components/NeuralNets/Index.jsx');
@@ -33,6 +35,8 @@ var Routes = (
     	<IndexRoute component={Home} />
       <Route path="signin" component={SignIn} />
       <Route path="docs" component={Docs} />
+      <Route path="about" component={About} />
+      <Route path="nav" component={Nav} />
       <Route path="neuralnetwork" component={NeuralNets} />
     </Route>
 );
