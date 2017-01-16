@@ -7,7 +7,7 @@ var Header = React.createClass({
 		return (
     	<div className="container-fluid" style={Style.container}>
 				<div className="row">
-					<div className="col-xs-12 col-centered">
+					<div className="col-lg-10 col-xs-12 col-centered">
 						<Link to="/" style={Style.title}>Neural Now</Link>
 						<div className="hidden-xs">
 							<Link to="/signin" style={Style.item}>Sign in</Link>
