@@ -12,9 +12,6 @@ var Component = React.createClass({
     	<div className="container-fluid" style={Style.container}>
 	    	<div className="row">
 					<div className="col-xs-12">
-            <Link to="/docs" style={Style.item}>Docs</Link>
-          </div>
-					<div className="col-xs-12">
             <Link to="/neuralnetwork" style={Style.item}>Neural Nets</Link>
           </div>
 					<div className="col-xs-12">

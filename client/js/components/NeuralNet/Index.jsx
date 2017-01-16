@@ -45,10 +45,16 @@ var Component = React.createClass({
         		<NeuralNetCanvas name={this.state.neuralNetwork.name} />
         	</div>
           <div className="col-lg-10 col-xs-12 col-centered">
-            <NeuralNetCode neuralNetwork={this.state.neuralNetwork} />
+		        <p>
+		          {"This is how you can use this neural network"}
+		        </p>
+            <NeuralNetCode name={this.state.neuralNetwork.name} />
           </div>
 					<div className="col-lg-10 col-xs-12 col-centered">
-						<NeuralNetTest neuralNetwork={this.state.neuralNetwork} />
+		        <p>
+		          {"Want to test it out? Insert a 2D array below and click \"Run\""}
+		        </p>
+						<NeuralNetTest name={this.state.neuralNetwork.name} />
 					</div>
 				</div>
 			</div>

@@ -13,7 +13,6 @@ var Header = React.createClass({
 							<Link to="/signin" style={Style.item}>Sign in</Link>
 							<Link to="/about" style={Style.item}>About</Link>
 							<Link to="/neuralnetwork" style={Style.item}>Neural Nets</Link>
-							<Link to="/docs" style={Style.item}>Docs</Link>
 						</div>
 						<div className="hidden-lg hidden-md hidden-sm">
 							<Link to="/nav" style={Style.item}>☰</Link>
