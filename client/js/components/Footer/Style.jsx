@@ -1,13 +1,11 @@
 module.exports = {
-    footer: {
-        display: "inline-flex",
-        width: "100%",
-        marginTop: "15px"
-    },
-    border: {
-        borderTop: "1px solid #ccc"
-    },
-    header: {
-        marginBottom: "1px"
-    }
+  container: {
+    marginTop: "25px"
+  },
+
+  border: {
+    borderTop: "1px solid #ccc",
+    paddingTop: "15px",
+    paddingBottom: "15px",
+  }
 }
