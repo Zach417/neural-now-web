@@ -82,7 +82,7 @@ module.exports = function(PlanManagerService) {
         var calledBack = false;
 
         for (var i = 0; i < this._docs.length; i++) {
-          if (this._docs[i]._id == id) {
+          if (this._docs[i].name == id) {
             callback(this._docs[i]);
             calledBack = true;
           }
@@ -96,7 +96,7 @@ module.exports = function(PlanManagerService) {
       }.bind(this));
     } else {
       for (var i = 0; i < this._docs.length; i++) {
-        if (this._docs[i]._id == id) {
+        if (this._docs[i].name == id) {
           return callback(this._docs[i]);
         }
       }

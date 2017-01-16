@@ -12,6 +12,7 @@ var About = require('./components/About.Anonymous/Index.jsx');
 var Nav = require('./components/Nav.Anonymous/Index.jsx');
 var SignIn = require('./components/SignIn/Index.jsx');
 var Docs = require('./components/Docs/Index.jsx');
+var NeuralNet = require('./components/NeuralNet/Index.jsx');
 var NeuralNets = require('./components/NeuralNets/Index.jsx');
 
 function scrollToTop () {
@@ -37,7 +38,10 @@ var Routes = (
       <Route path="docs" component={Docs} />
       <Route path="about" component={About} />
       <Route path="nav" component={Nav} />
-      <Route path="neuralnetwork" component={NeuralNets} />
+  		<Route path="neuralnetwork">
+        <IndexRoute component={NeuralNets} />
+  			<Route path=":id" component={NeuralNet} />
+  		</Route>
     </Route>
 );
 

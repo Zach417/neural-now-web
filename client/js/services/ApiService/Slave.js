@@ -2,33 +2,33 @@ var $ = require('jquery');
 
 function Slave(storeName) {
 
-	this.root = "/stores/" + storeName + "/";
+	this.root = "http://api.neuralnow.com/" + storeName + "/";
 
 	return {
 		get: function (callback) {
-			 $.getJSON({
+			$.getJSON({
 			 	url: this.root,
 			 	success: function(data){
 			 		callback(data);
-			    },
+			  },
 				error: function (xhr, ajaxOptions, thrownError) {
 					console.log("XHR Status:", xhr.status);
 					console.log("Thrown Error:", thrownError);
 				}
-		    });
+			});
 		}.bind(this),
 
 		getOne: function (id, callback) {
-			 $.getJSON({
-			 	url: this.root + id,
-			 	success: function(data){
-			 		callback(data);
-			    },
+			$.getJSON({
+				url: this.root + id,
+				success: function(data){
+					callback(data);
+				},
 				error: function (xhr, ajaxOptions, thrownError) {
 					console.log("XHR Status:", xhr.status);
 					console.log("Thrown Error:", thrownError);
 				}
-		    });
+			});
 		}.bind(this),
 
 		insert: function (doc, callback) {
