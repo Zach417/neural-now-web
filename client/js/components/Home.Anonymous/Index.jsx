@@ -16,7 +16,7 @@ var Component = React.createClass({
     	<div className="container-fluid" style={Style.container}>
 	    	<div className="row">
           <div className="col-lg-10 col-xs-12 col-centered">
-            <h1>{"Lord, give me a Math.sin()"}</h1>
+            <h1>{"Deploy someone else's neural network"}</h1>
           </div>
         	<div className="col-lg-10 col-xs-12 col-centered">
         		<NeuralNetCanvas name={"sine"} />
@@ -27,7 +27,7 @@ var Component = React.createClass({
           <div className="col-xs-12" style={{paddingTop:"15px"}} />
         	<div className="col-lg-10 col-xs-12 col-centered">
             <h3>
-              {"Neural Now let's you deploy someone else's neural network "}
+              {"Lord, give me a Math.sin()"}
             </h3>
             <p>
               {"With our open source libraries and packages, "}
