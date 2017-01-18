@@ -18,7 +18,7 @@ var Component = React.createClass({
             <Link to="/about" style={Style.item}>About</Link>
           </div>
 					<div className="col-xs-12">
-            <Link to="/auth/sign-out" style={Style.item}>Sign out</Link>
+            <Link to="/sign-out" style={Style.item}>Sign out</Link>
           </div>
 	      </div>
 			</div>
