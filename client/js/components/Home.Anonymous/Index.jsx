@@ -1,6 +1,7 @@
 var React = require('react');
 var Link = require('react-router').Link;
 var Style = require('./Style.jsx');
+var Jumbotron = require('./Jumbotron.jsx');
 var NeuralNetCanvas = require('../NeuralNetCanvas/Index.jsx');
 var NeuralNetCode = require('../NeuralNetCode/Index.jsx');
 var NeuralNetTest = require('../NeuralNetTest/Index.jsx');
@@ -33,7 +34,7 @@ var Component = React.createClass({
             <h3>{"Get up and running quickly with npm.js"}</h3>
             <p>
               {"NeuralNow.get() is all you need to deploy any "}
-              {"of the world's most powerful neural networks. "}
+              {"of the our most powerful neural networks. "}
             </p>
           </div>
           <div className="col-lg-10 col-xs-12 col-centered">
@@ -49,19 +50,9 @@ var Component = React.createClass({
 					<div className="col-lg-10 col-xs-12 col-centered">
 						<NeuralNetTest name={"sine"} />
 					</div>
+          <div className="col-xs-12" style={{paddingBottom:"45px"}} />
 	      </div>
-        <div className="row">
-          <div className="col-xs-12" style={{paddingTop:"75px"}} />
-          <div className="col-lg-10 col-xs-12 col-centered">
-            <h3>
-              {"Learn more about Neural Now by clicking "}
-              <Link to="/about">here</Link>
-              {" or you can search public neural networks "}
-              <Link to="/neuralnetwork">here</Link>.
-            </h3>
-          </div>
-          <div className="col-xs-12" style={{paddingBottom:"50px"}} />
-        </div>
+        <Jumbotron />
 			</div>
     );
   },

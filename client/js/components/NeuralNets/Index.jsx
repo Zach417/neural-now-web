@@ -29,7 +29,7 @@ var Component = React.createClass({
 					<div className="col-lg-10 col-xs-12 col-centered">
             <h1>Neural Networks</h1>
 						<p>
-							Search the zoo! Find all of the neural networks
+							Welcome to the zoo! Find all of the neural networks
 							that you want to use here.
 						</p>
 					</div>
