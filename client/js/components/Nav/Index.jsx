@@ -18,10 +18,7 @@ var Component = React.createClass({
             <Link to="/about" style={Style.item}>About</Link>
           </div>
 					<div className="col-xs-12">
-            <Link to="/sign-in" style={Style.item}>Sign in</Link>
-          </div>
-					<div className="col-xs-12">
-            <Link to="/sign-up" style={Style.item}>Sign up</Link>
+            <Link to="/auth/sign-out" style={Style.item}>Sign out</Link>
           </div>
 	      </div>
 			</div>

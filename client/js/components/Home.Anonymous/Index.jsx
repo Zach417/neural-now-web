@@ -27,7 +27,7 @@ var Component = React.createClass({
           <div className="col-xs-12" style={{paddingTop:"15px"}} />
         	<div className="col-lg-10 col-xs-12 col-centered">
             <h3>
-              {"Lord, give me a Math.sin()"}
+              {"Lord, show me a Math.sin()"}
             </h3>
             <p>
               {"With our open source libraries and packages, "}

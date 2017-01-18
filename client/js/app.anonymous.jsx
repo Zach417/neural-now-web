@@ -11,6 +11,8 @@ var Home = require('./components/Home.Anonymous/Index.jsx');
 var About = require('./components/About.Anonymous/Index.jsx');
 var Nav = require('./components/Nav.Anonymous/Index.jsx');
 var SignIn = require('./components/SignIn/Index.jsx');
+var SignUp = require('./components/SignUp/Index.jsx');
+var SignUpVerify = require ('./components/SignUp/Verify.jsx');
 var Docs = require('./components/Docs/Index.jsx');
 var NeuralNet = require('./components/NeuralNet/Index.jsx');
 var NeuralNets = require('./components/NeuralNets/Index.jsx');
@@ -34,7 +36,11 @@ var App = React.createClass({
 var Routes = (
 	 <Route path="/" component={App}>
     	<IndexRoute component={Home} />
-      <Route path="signin" component={SignIn} />
+      <Route path="sign-in" component={SignIn} />
+      <Route path="sign-up">
+          <IndexRoute component={SignUp} />
+          <Route path=":id" component={SignUpVerify} />
+      </Route>
       <Route path="docs" component={Docs} />
       <Route path="about" component={About} />
       <Route path="nav" component={Nav} />

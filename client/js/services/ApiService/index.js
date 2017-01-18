@@ -1,14 +1,51 @@
 var $ = require('jquery');
 var Slave = require('./Slave');
 
+var root = "/auth/";
+
 var Service = {
 	NeuralNetwork: new Slave("neuralnetwork"),
 	users: new Slave("user"),
 }
 
+
+Service.signIn = function(options, callback) {
+  $.ajax({
+    url: root + 'sign-in',
+    type: 'POST',
+    contentType: "application/json",
+    beforeSend: function(xhr) {
+      xhr.setRequestHeader('email', options.email);
+      xhr.setRequestHeader('password', options.password);
+    },
+    success: function(data) {
+      callback(data);
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+      console.log("XHR Status:", xhr.status);
+      console.log("Thrown Error:", thrownError);
+    }
+  });
+}
+
+Service.signOut = function(callback) {
+  $.ajax({
+    url: root + 'sign-out',
+    type: 'POST',
+    contentType: "application/json",
+    success: function(data) {
+      callback(data);
+    },
+    error: function(xhr, ajaxOptions, thrownError) {
+      console.log("XHR Status:", xhr.status);
+      console.log("Thrown Error:", thrownError);
+    }
+  });
+}
+
 Service.requestUserSetup = function(options, callback) {
 	 $.ajax({
-		url: '/register',
+		url: root + 'sign-up',
 		type: 'POST',
 		contentType: "application/json",
         beforeSend: function (xhr) {
@@ -29,10 +66,10 @@ Service.requestUserSetup = function(options, callback) {
 
 Service.setupUser = function (options, callback) {
 	 $.ajax({
-		url: '/register/' + options.id,
+		url: root + 'sign-up/' + options.id,
 		type: 'POST',
 		contentType: "application/json",
-        beforeSend: function (xhr) {
+    beforeSend: function (xhr) {
 			xhr.setRequestHeader('token', options.token);
 		},
 		success: function(data){
@@ -47,7 +84,7 @@ Service.setupUser = function (options, callback) {
 
 Service.requestPasswordReset = function(options, callback) {
 	 $.ajax({
-		url: '/forgot',
+		url: root + 'forgot-password',
 		type: 'POST',
 		contentType: "application/json",
         beforeSend: function (xhr) {
@@ -65,7 +102,7 @@ Service.requestPasswordReset = function(options, callback) {
 
 Service.resetPassword = function(options, callback) {
 	 $.ajax({
-		url: '/forgot/' + options.id,
+		url: root + 'forgot-password/' + options.id,
 		type: 'POST',
 		contentType: "application/json",
         beforeSend: function (xhr) {

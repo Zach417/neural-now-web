@@ -3,6 +3,7 @@ var $ = require('jquery');
 function Slave(storeName) {
 
 	this.root = "http://api.neuralnow.com/" + storeName + "/";
+	//this.root = "http://localhost:8080/" + storeName + "/";
 
 	return {
 		get: function (callback) {

@@ -30,8 +30,8 @@ var Component = React.createClass({
 					</div>
 					<div className="col-lg-10 col-xs-12 col-centered">
 						<p>
-							This is a playground area for neural networks that can be
-							deployed on the Neural Now service.
+							Search the zoo! Find all of the neural networks
+							that you want to use here.
 						</p>
 					</div>
 					<div className="col-lg-10 col-xs-12 col-centered">

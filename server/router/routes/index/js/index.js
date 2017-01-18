@@ -13,7 +13,7 @@ router.use('/prism', function (req, res, next) {
 });
 
 router.use(function (req, res, next) {
-	if (!req.session || !req.cookies.accessToken) {
+	if (!req.cookies.accessToken) {
 		res.sendFile(path.join(__dirname + _root + '/build/bundle.anonymous.js'));
 	} else {
 		res.sendFile(path.join(__dirname + _root + '/build/bundle.js'));

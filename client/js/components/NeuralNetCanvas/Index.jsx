@@ -149,8 +149,15 @@ var Component = React.createClass({
           for (var k = 0; k < nn.hidden[i].size; k++) {
             var x2 = this.getLayerX(i + 1);
             var y2 = this.getLayerY(k, nn.hidden[i].size);
+            var weight = nn.weights[i][j][k];
             var key = "hidden" + (i - 1) + "-hidden" + i + "-" + j + "-" + k;
-            lines.push(<line key={key} x1={x1} y1={y1} x2={x2} y2={y2} stroke="white" strokeWidth="3" />)
+            var stroke = "green";
+            var strokeWidth = maxStrokeWidth * (weight / maxWeight);
+            if (weight < 0) {
+              stroke = "red";
+              strokeWidth = maxStrokeWidth * (weight / minWeight);
+            }
+            lines.push(<line key={key} x1={x1} y1={y1} x2={x2} y2={y2} stroke={stroke} strokeWidth={strokeWidth} />)
           }
         }
       }

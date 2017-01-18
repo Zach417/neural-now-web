@@ -10,9 +10,7 @@ var Header = React.createClass({
 					<div className="col-lg-10 col-xs-12 col-centered">
 						<Link to="/" style={Style.title}>Neural Now</Link>
 						<div className="hidden-xs">
-							<Link to="/sign-up" style={Style.item}>Sign up</Link>
-							<Link to="/sign-in" style={Style.item}>Sign in</Link>
-							<Link to="/neuralnetwork" style={Style.item}>Neural Nets</Link>
+							<Link to="/sign-out" style={Style.item}>Sign out</Link>
 						</div>
 						<div className="hidden-lg hidden-md hidden-sm">
 							<Link to="/nav" style={Style.item}>☰</Link>
