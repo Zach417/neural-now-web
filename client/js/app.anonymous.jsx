@@ -15,6 +15,8 @@ var SignUp = require('./components/SignUp/Index.jsx');
 var SignUpVerify = require ('./components/SignUp/Verify.jsx');
 var Docs = require('./components/Docs/Index.jsx');
 var NeuralNet = require('./components/NeuralNet/Index.jsx');
+var NeuralNetNew = require('./components/NeuralNet/New.jsx');
+var NeuralNetEdit = require('./components/NeuralNet/Edit.jsx');
 var NeuralNets = require('./components/NeuralNets/Index.jsx');
 
 function scrollToTop () {
@@ -46,7 +48,11 @@ var Routes = (
       <Route path="nav" component={Nav} />
   		<Route path="neuralnetwork">
         <IndexRoute component={NeuralNets} />
-  			<Route path=":id" component={NeuralNet} />
+  			<Route path="new" component={NeuralNetEdit} />
+  			<Route path=":id">
+          <IndexRoute component={NeuralNet} />
+    			<Route path="edit" component={NeuralNetEdit} />
+  		  </Route>
   		</Route>
     </Route>
 );

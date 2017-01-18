@@ -29,20 +29,37 @@ var Component = React.createClass({
     window.addEventListener("resize", this.updateCanvasSize);
   },
 
+  componentWillUnmount: function () {
+    this.updateCanvasSize();
+    window.removeEventListener("resize", this.updateCanvasSize);
+  },
+
   componentWillMount: function () {
-    NeuralNetworkStore.getOne(this.props.name, function (neuralNetwork) {
+    if (this.props.neuralNetwork) {
       var state = this.state;
-      state.neuralNetwork = neuralNetwork;
+      state.neuralNetwork = this.props.neuralNetwork;
       this.setState(state);
-    }.bind(this));
+    } else {
+      NeuralNetworkStore.getOne(this.props.name, function (neuralNetwork) {
+        var state = this.state;
+        state.neuralNetwork = neuralNetwork;
+        this.setState(state);
+      }.bind(this));
+    }
   },
 
   componentWillReceiveProps: function (nextProps) {
-    NeuralNetworkStore.getOne(nextProps.name, function (neuralNetwork) {
+    if (nextProps.neuralNetwork) {
       var state = this.state;
-      state.neuralNetwork = neuralNetwork;
+      state.neuralNetwork = nextProps.neuralNetwork;
       this.setState(state);
-    }.bind(this));
+    } else {
+      NeuralNetworkStore.getOne(nextProps.name, function (neuralNetwork) {
+        var state = this.state;
+        state.neuralNetwork = neuralNetwork;
+        this.setState(state);
+      }.bind(this));
+    }
   },
 
   render: function() {

@@ -3,6 +3,7 @@ var Link = require('react-router').Link;
 var browserHistory = require('react-router').browserHistory;
 var Griddle = require('griddle-react');
 var Style = require('./Style.jsx');
+var Button = require('../Button/Index.jsx');
 var NeuralNetCanvas = require('../NeuralNetCanvas/Index.jsx');
 var NeuralNetworkStore = require('../../stores/NeuralNetworkStore');
 
@@ -27,12 +28,14 @@ var Component = React.createClass({
 				<div className="row">
 					<div className="col-lg-10 col-xs-12 col-centered">
             <h1>Neural Networks</h1>
-					</div>
-					<div className="col-lg-10 col-xs-12 col-centered">
 						<p>
 							Search the zoo! Find all of the neural networks
 							that you want to use here.
 						</p>
+					</div>
+					<div className="col-lg-10 col-xs-12 col-centered">
+						<Button.Primary label={"New Neural Network"} onClick={this.handleClick_New} />
+						<div style={{marginBottom:"15px"}} />
 					</div>
 					<div className="col-lg-10 col-xs-12 col-centered">
 		        <Griddle results={this.getGriddleData()} columns={["Name", "Size"]}
@@ -55,6 +58,10 @@ var Component = React.createClass({
     }
     return result;
   },
+
+	handleClick_New: function () {
+    browserHistory.push("/neuralnetwork/new");
+	},
 
   handleClick_Row: function (gridRow, group) {
     browserHistory.push("/neuralnetwork/" + gridRow.props.data["Name"]);

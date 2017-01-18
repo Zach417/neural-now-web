@@ -1,9 +1,9 @@
 var StoreTemplate = require('./Template');
-var PlanManagerService = require('../services/PlanManagerService');
+var ApiService = require('../services/ApiService');
 var AppDispatcher = require('../dispatcher/AppDispatcher.js');
 var Constants = require('../constants/UserConstants.js');
 
-var UserStore = new StoreTemplate(PlanManagerService.users);
+var UserStore = new StoreTemplate(ApiService.users);
 
 UserStore.getUserFromEmail = function (email, callback) {
 	UserStore.get(function (docs) {
