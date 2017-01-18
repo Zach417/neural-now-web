@@ -66,6 +66,8 @@ var Component = React.createClass({
 		return (
 			<div className="col-lg-10 col-xs-12 col-centered">
 				<Button.Primary label="Edit" onClick={this.handleClick_Edit} />
+				<span style={{marginLeft:"15px"}} />
+				<Button.Secondary label="Back" onClick={this.handleClick_Back} />
 				<div style={{marginBottom:"15px"}} />
 			</div>
 		)
@@ -73,7 +75,11 @@ var Component = React.createClass({
 
 	handleClick_Edit: function () {
 		browserHistory.push("/neuralnetwork/" + this.props.params.id + "/edit");
-	}
+	},
+
+	handleClick_Back: function () {
+		browserHistory.push("/neuralnetwork");
+	},
 });
 
 module.exports = Component;

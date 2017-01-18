@@ -17,6 +17,10 @@ var Component = React.createClass({
 	    	<div className="row">
           <div className="col-lg-10 col-xs-12 col-centered">
             <h1>{"Deploy someone else's neural network"}</h1>
+            <h3>
+              {"Search for models that meet your needs and "}
+              {"use them for free!"}
+            </h3>
           </div>
         	<div className="col-lg-10 col-xs-12 col-centered">
         		<NeuralNetCanvas name={"sine"} />
@@ -26,13 +30,10 @@ var Component = React.createClass({
         <div className="row" style={{backgroundColor: "#1487BF", color: "white"}}>
           <div className="col-xs-12" style={{paddingTop:"15px"}} />
         	<div className="col-lg-10 col-xs-12 col-centered">
-            <h3>
-              {"Lord, show me a Math.sin()"}
-            </h3>
+            <h3>{"Get up and running quickly with npm.js"}</h3>
             <p>
-              {"With our open source libraries and packages, "}
-              {"it's never been easier to leverage machine learning "}
-              {"in your projects."}
+              {"NeuralNow.get() is all you need to deploy any "}
+              {"of the world's most powerful neural networks. "}
             </p>
           </div>
           <div className="col-lg-10 col-xs-12 col-centered">
@@ -42,9 +43,8 @@ var Component = React.createClass({
         </div>
         <div className="row">
           <div className="col-lg-10 col-xs-12 col-centered">
-            <h3>
-              {"You can even test it out here!"}
-            </h3>
+            <h3>{"You can even test them out here on this website!"}</h3>
+            <p>{"Type in [[3.14]] below to test out the neural network 'sine'"}</p>
           </div>
 					<div className="col-lg-10 col-xs-12 col-centered">
 						<NeuralNetTest name={"sine"} />
