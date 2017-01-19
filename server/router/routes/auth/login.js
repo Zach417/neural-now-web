@@ -20,7 +20,7 @@ module.exports = function (app) {
 						message: "Sign in failed.",
 					});
 				}
-
+				res.cookie("email", json.email);
 				res.cookie("accessToken", json.accessToken);
 				return res.json({
 					success: true,

@@ -7,7 +7,7 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
-module.exports = function(PlanManagerService) {
+module.exports = function(ApiService) {
 
   this._docs = [];
   this._requests = [];
@@ -47,7 +47,7 @@ module.exports = function(PlanManagerService) {
         this._ignore = true;
       }
 
-      PlanManagerService.get(function(docs) {
+      ApiService.get(function(docs) {
         this._ignore = false;
         this._docs = docs;
         this._refreshed = true;
@@ -75,7 +75,7 @@ module.exports = function(PlanManagerService) {
         this._ignore = true;
       }
 
-      PlanManagerService.get(function(docs) {
+      ApiService.get(function(docs) {
         this._ignore = false;
         this._docs = docs;
 
@@ -108,15 +108,15 @@ module.exports = function(PlanManagerService) {
     getOne: this.getOne,
 
     insert: function(doc, callback) {
-      PlanManagerService.insert(doc, callback);
+      ApiService.insert(doc, callback);
     },
 
     update: function(doc, callback) {
-      PlanManagerService.update(doc, callback);
+      ApiService.update(doc, callback);
     },
 
     delete: function(doc, callback) {
-      PlanManagerService.delete(doc, callback);
+      ApiService.delete(doc, callback);
     },
 
     emitChange: function() {

@@ -22,6 +22,14 @@ var Component = React.createClass({
 		}.bind(this));
 	},
 
+  componentDidMount: function() {
+    NeuralNetworkStore.addChangeListener(this.componentWillMount);
+  },
+
+  componentWillUnmount: function() {
+    NeuralNetworkStore.removeChangeListener(this.componentWillMount);
+  },
+
 	render: function () {
 		return (
     	<div className="container-fluid" style={Style.container}>

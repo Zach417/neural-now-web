@@ -16,7 +16,7 @@ var Component = React.createClass({
 		return {
       weightString: '[]',
 			neuralNetwork: {
-        name: "New",
+        name: "new-neural-net",
         input: {size: 1, activation: "linear"},
         hidden: [],
         output: {size: 1, activation: "sigmoid"},
@@ -36,6 +36,14 @@ var Component = React.createClass({
     }
 	},
 
+  componentDidMount: function() {
+    NeuralNetworkStore.addChangeListener(this.componentWillMount);
+  },
+
+  componentWillUnmount: function() {
+    NeuralNetworkStore.removeChangeListener(this.componentWillMount);
+  },
+
 	render: function (){
 		return (
     	<div className="container-fluid" style={Style.container}>
@@ -50,12 +58,35 @@ var Component = React.createClass({
     				<Button.Primary label="Save" onClick={this.handleClick_Save} />
     				<span style={{marginLeft:"15px"}} />
       			<Button.Secondary label="Cancel" onClick={this.handleClick_Cancel} />
+    				<span style={{marginLeft:"15px"}} />
+      			<Button.Danger label="Delete" onClick={this.handleClick_Delete} />
     				<div style={{marginBottom:"15px"}} />
     			</div>
         	<div className="col-lg-10 col-xs-12 col-centered">
         		<NeuralNetCanvas neuralNetwork={this.state.neuralNetwork} />
         	</div>
-          {this.getSettings()}
+				</div>
+				<div className="row">
+					<div className="col-lg-10 col-xs-12 col-centered">
+						<h3>Details</h3>
+						<div className="col-xs-12">
+							<Form.Label label={"Name"} />
+							<Form.Input
+								value={this.state.neuralNetwork.name}
+								attribute="name"
+								onChange={this.handleChange_Attribute} />
+						</div>
+						<div className="col-xs-12">
+							<Form.Label label={"Description"} />
+							<Form.TextArea
+								value={this.state.neuralNetwork.description}
+								attribute="description"
+								onChange={this.handleChange_Attribute} />
+						</div>
+					</div>
+				</div>
+				<div className="row">
+        	{this.getSettings()}
 				</div>
 			</div>
 		);
@@ -153,6 +184,12 @@ var Component = React.createClass({
     )
   },
 
+	handleChange_Attribute: function (attribute, value) {
+		var state = this.state;
+		state.neuralNetwork[attribute] = value;
+		this.setState(state);
+	},
+
   handleChange_Weights: function (value) {
     var isJson = true;
     try {
@@ -174,10 +211,14 @@ var Component = React.createClass({
   },
 
   handleClick_Save: function () {
-    if (this.props.params && this.props.params.id) {
-			browserHistory.push("/neuralnetwork/" + this.state.neuralNetwork.name);
+		if (this.props.params && this.props.params.id) {
+			NeuralNetworkStore.update(this.state.neuralNetwork, function (data) {
+		    browserHistory.push("/neuralnetwork/" + this.state.neuralNetwork.name);
+			}.bind(this));
 		} else {
-			browserHistory.push("/neuralnetwork");
+			NeuralNetworkStore.insert(this.state.neuralNetwork, function (data) {
+		    browserHistory.push("/neuralnetwork");
+			}.bind(this));
 		}
   },
 
@@ -186,6 +227,14 @@ var Component = React.createClass({
 			browserHistory.push("/neuralnetwork/" + this.state.neuralNetwork.name);
 		} else {
 			browserHistory.push("/neuralnetwork");
+		}
+	},
+
+	handleClick_Delete: function () {
+		if (this.props.params && this.props.params.id) {
+			NeuralNetworkStore.delete(this.state.neuralNetwork, function (data) {
+				browserHistory.push("/neuralnetwork/");
+			}.bind(this));
 		}
 	},
 
@@ -202,6 +251,7 @@ var Component = React.createClass({
 
     var neuralNetwork = new NeuralNetwork();
     neuralNetwork.generateFromJson(this.state.neuralNetwork);
+		neuralNetwork._id = this.state.neuralNetwork._id;
 
 		if (isNaN(Number(value))) {
 			neuralNetwork[attribute].size = 0;
@@ -222,6 +272,7 @@ var Component = React.createClass({
 	handleChange_Hidden_Input: function (attribute, value) {
     var neuralNetwork = new NeuralNetwork();
     neuralNetwork.generateFromJson(this.state.neuralNetwork);
+		neuralNetwork._id = this.state.neuralNetwork._id;
     neuralNetwork.weights = [];
 
   	var i = Number(attribute);
@@ -287,12 +338,15 @@ var Component = React.createClass({
       neuralNetwork.weights.push(nn.weights[i].tolist());
     }
 
+		neuralNetwork._id = this.state.neuralNetwork._id;
+
     return neuralNetwork;
   },
 
 	handleClick_RemoveHidden: function () {
     var neuralNetwork = new NeuralNetwork();
     neuralNetwork.generateFromJson(this.state.neuralNetwork);
+		neuralNetwork._id = this.state.neuralNetwork._id;
     neuralNetwork.hidden.splice(neuralNetwork.hidden.length - 1, 1);
     neuralNetwork.weights = [];
     neuralNetwork.generateDendrites();
