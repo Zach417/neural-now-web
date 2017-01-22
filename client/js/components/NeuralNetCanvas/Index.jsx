@@ -2,6 +2,53 @@ var React = require('react');
 var $ = require('jquery');
 var NeuralNetworkStore = require('../../stores/NeuralNetworkStore');
 
+function copyNeuralNetwork (neuralNetwork) {
+  var nn = {
+    input: {},
+    hidden: [],
+    output: {},
+    weights: [],
+  };
+  nn.input.size = neuralNetwork.input.size;
+  nn.input.activation = neuralNetwork.input.activation;
+
+  for (var i = 0; i < neuralNetwork.hidden.length; i++) {
+    nn.hidden.push({
+      size: neuralNetwork.hidden[i].size,
+      activation: neuralNetwork.hidden[i].activation,
+    });
+  }
+
+  nn.output.size = neuralNetwork.output.size;
+  nn.output.activation = neuralNetwork.output.activation;
+
+  for (var i = 0; i < neuralNetwork.weights.length; i++) {
+    nn.weights.push(neuralNetwork.weights[i]);
+  }
+
+  return nn;
+}
+
+function setMaxLayerSize (neuralNetwork) {
+  var nn = copyNeuralNetwork(neuralNetwork);
+
+  if (nn.input.size > 50) {
+    nn.input.size = 50;
+  }
+
+  if (nn.output.size > 50) {
+    nn.output.size = 50;
+  }
+
+  for (var i = 0; i < nn.hidden.length; i++) {
+    if (nn.hidden[i].size > 50) {
+      nn.hidden[i].size = 50;
+    }
+  }
+
+  return nn;
+}
+
 var Component = React.createClass({
   getInitialState: function() {
     return {
@@ -37,12 +84,12 @@ var Component = React.createClass({
   componentWillMount: function () {
     if (this.props.neuralNetwork) {
       var state = this.state;
-      state.neuralNetwork = this.props.neuralNetwork;
+      state.neuralNetwork = setMaxLayerSize(this.props.neuralNetwork);
       this.setState(state);
     } else {
       NeuralNetworkStore.getOne(this.props.name, function (neuralNetwork) {
         var state = this.state;
-        state.neuralNetwork = neuralNetwork;
+        state.neuralNetwork = setMaxLayerSize(neuralNetwork);
         this.setState(state);
       }.bind(this));
     }
@@ -51,12 +98,12 @@ var Component = React.createClass({
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.neuralNetwork) {
       var state = this.state;
-      state.neuralNetwork = nextProps.neuralNetwork;
+      state.neuralNetwork = setMaxLayerSize(nextProps.neuralNetwork);
       this.setState(state);
     } else {
       NeuralNetworkStore.getOne(nextProps.name, function (neuralNetwork) {
         var state = this.state;
-        state.neuralNetwork = neuralNetwork;
+        state.neuralNetwork = setMaxLayerSize(neuralNetwork);
         this.setState(state);
       }.bind(this));
     }

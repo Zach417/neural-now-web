@@ -77,10 +77,33 @@ var Component = React.createClass({
 								onChange={this.handleChange_Attribute} />
 						</div>
 						<div className="col-xs-12">
-							<Form.Label label={"Description"} />
+							<Form.Label label={"Neural Net Description"} />
 							<Form.TextArea
 								value={this.state.neuralNetwork.description}
 								attribute="description"
+								onChange={this.handleChange_Attribute} />
+						</div>
+						<div className="col-xs-12">
+							<Form.Label label={"Input Type"} />
+							<Form.Select
+								allowNulls={true}
+								options={["vector","text","image","audio"]}
+								value={this.state.neuralNetwork.inputType}
+								attribute="inputType"
+								onChange={this.handleChange_Attribute} />
+						</div>
+						<div className="col-xs-12">
+							<Form.Label label={"Output Description"} />
+							<Form.TextArea
+								value={this.state.neuralNetwork.outputDescription}
+								attribute="outputDescription"
+								onChange={this.handleChange_Attribute} />
+						</div>
+						<div className="col-xs-12">
+							<Form.Label label={"Code Example"} />
+							<Form.TextArea
+								value={this.state.neuralNetwork.codeExample}
+								attribute="codeExample"
 								onChange={this.handleChange_Attribute} />
 						</div>
 					</div>
@@ -245,10 +268,6 @@ var Component = React.createClass({
   },
 
 	handleChange_Size: function (attribute, value) {
-		if (Number(value) > 200) {
-			value = "200";
-		}
-
     var neuralNetwork = new NeuralNetwork();
     neuralNetwork.generateFromJson(this.state.neuralNetwork);
 		neuralNetwork._id = this.state.neuralNetwork._id;

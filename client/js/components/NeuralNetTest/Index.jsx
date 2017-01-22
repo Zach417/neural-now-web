@@ -2,13 +2,18 @@ var React = require('react');
 var Link = require('react-router').Link;
 var Style = require('./Style.jsx');
 var NeuralNow = require('neural-now');
-var Form = require('../Form/Index.jsx');
+var Menu = require('./Menu.jsx');
+var Console = require('./Console.jsx');
+var Error = require('./Error.jsx');
+var Vector = require('./Vector.jsx');
+var Text = require('./Text.jsx');
 var Button = require('../Button/Index.jsx');
 var NeuralNetworkStore = require('../../stores/NeuralNetworkStore');
 
 var Component = React.createClass({
   getInitialState: function () {
     return {
+      area: 'vector',
       neuralNetwork: {
         name: "neural-network",
         input: {size: 0},
@@ -26,6 +31,29 @@ var Component = React.createClass({
     NeuralNetworkStore.getOne(this.props.name, function (neuralNetwork) {
       var state = this.state;
       state.neuralNetwork = neuralNetwork;
+
+      if (neuralNetwork.inputType) {
+        state.area = neuralNetwork.inputType;
+      } else {
+        state.area = "vector";
+      }
+
+      state.input = this.getNeuralNetworkInputString();
+      this.setState(state);
+    }.bind(this));
+  },
+
+  componentWillReceiveProps: function (nextProps) {
+    NeuralNetworkStore.getOne(nextProps.name, function (neuralNetwork) {
+      var state = this.state;
+      state.neuralNetwork = neuralNetwork;
+
+      if (neuralNetwork.inputType) {
+        state.area = neuralNetwork.inputType;
+      } else {
+        state.area = "vector";
+      }
+
       state.input = this.getNeuralNetworkInputString();
       this.setState(state);
     }.bind(this));
@@ -34,21 +62,34 @@ var Component = React.createClass({
   render: function () {
     return (
       <div>
-        <pre>
-  				<code
-            className="language-bash"
-            dangerouslySetInnerHTML={this.getMarkup()}>
-  				</code>
-        </pre>
-        {this.getError()}
-        <Form.TextArea
-          value={this.state.input}
-          onChange={this.handleChange_TextArea} />
-        <Button.Primary
-          label="Run"
-          onClick={this.handleClick} />
+        <Console result={this.state.result} />
+        <Error message={this.state.error} />
+        <div>
+          <Menu
+            selected={this.state.area}
+            inputType={this.state.neuralNetwork.inputType}
+            onChange={this.handleChange_Menu} />
+          <div style={{padding:"10px",border:"1px solid #222",borderTop:"hidden",backgroundColor:"#eee",marginBottom:"10px"}}>
+            {this.getSubComponent()}
+            <div style={{paddingTop:"5px"}} />
+            <Button.Primary
+              label="Run"
+              onClick={this.handleClick} />
+          </div>
+        </div>
       </div>
     );
+  },
+
+  getSubComponent: function () {
+    switch (this.state.area) {
+      case "vector":
+        return (<Vector input={this.state.input} onChange={this.handleChange_SubComponent} />);
+      case "text":
+        return (<Text input={this.state.input} onChange={this.handleChange_SubComponent} />);
+      default:
+        return (<Vector input={this.state.input} onChange={this.handleChange_SubComponent} />);
+    }
   },
 
   getNeuralNetworkInputString: function () {
@@ -65,32 +106,32 @@ var Component = React.createClass({
   },
 
   handleClick: function () {
-    var input = JSON.parse(this.state.input);
-    var name = this.state.neuralNetwork.name;
-    NeuralNow.get(name, function (neuralNet) {
+    try {
+      var input = JSON.parse(this.state.input);
+      var name = this.state.neuralNetwork.name;
+      NeuralNow.get(name, function (neuralNet) {
+        var state = this.state;
+        state.result = neuralNet.forward(input).tolist();
+        state.error = '';
+        this.setState(state)
+      }.bind(this));
+    } catch (e) {
       var state = this.state;
-      state.result = neuralNet.forward(input).tolist();
-      this.setState(state)
-    }.bind(this));
-  },
-
-  handleChange_TextArea: function (value) {
-    var state = this.state;
-    state.input = value;
-    this.setState(state);
-  },
-
-  getError: function () {
-    if (this.state.error) {
-
+      state.error = e.toString();
+      this.setState(state);
     }
   },
 
-  getMarkup: function () {
-    var code = ">>> " + this.state.result;
-    return {
-      __html: Prism.highlight(code,Prism.languages.bash)
-    };
+  handleChange_Menu: function (item) {
+    var state = this.state;
+    state.area = item;
+    this.setState(state);
+  },
+
+  handleChange_SubComponent: function (input) {
+    var state = this.state;
+    state.input = input;
+    this.setState(state);
   },
 });
 

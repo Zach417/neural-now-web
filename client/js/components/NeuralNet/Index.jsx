@@ -45,23 +45,26 @@ var Component = React.createClass({
 				<div className="row">
 					<div className="col-lg-10 col-xs-12 col-centered">
             <h1>
-              {"Neural Network - "}
               {this.state.neuralNetwork.name}
             </h1>
+						<p>{this.state.neuralNetwork.description}</p>
 					</div>
 					{this.getControls()}
         	<div className="col-lg-10 col-xs-12 col-centered">
         		<NeuralNetCanvas name={this.state.neuralNetwork.name} />
+						<div style={{marginBottom: "25px"}} />
         	</div>
           <div className="col-lg-10 col-xs-12 col-centered">
 		        <p>
-		          {"This is how you can use this neural network"}
+		          {"This is how you can use this neural network in your project"}
 		        </p>
             <NeuralNetCode name={this.state.neuralNetwork.name} />
+						<div style={{marginBottom: "25px"}} />
           </div>
 					<div className="col-lg-10 col-xs-12 col-centered">
 		        <p>
-		          {"Want to test it out? Insert a 2D array below and click \"Run\""}
+		          {"You can test out this neural network by inserting "}
+							{"the appropriate input below and clicking \"Run\""}
 		        </p>
 						<NeuralNetTest name={this.state.neuralNetwork.name} />
 					</div>

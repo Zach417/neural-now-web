@@ -6,6 +6,23 @@ var FormSelect = React.createClass({
     return {
       isHovered: false,
       isFocused: false,
+      allowNulls: true,
+    }
+  },
+
+  componentWillMount: function () {
+    if (this.props.allowNulls != '' && this.props.allowNulls === false) {
+      var state = this.state;
+      state.allowNulls = false;
+      this.setState(state);
+    }
+  },
+
+  componentWillReceiveProps: function (nextProps) {
+    if (this.props.allowNulls != '' && nextProps.allowNulls === false) {
+      var state = this.state;
+      state.allowNulls = false;
+      this.setState(state);
     }
   },
 
@@ -19,14 +36,21 @@ var FormSelect = React.createClass({
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         onChange={this.handleChange}>
-        <option value="" />
         {this.getOptions()}
       </select>
     )
   },
 
   getOptions: function () {
-    return this.props.options.map(function (option, i) {
+    var options = [];
+
+    if (this.state.allowNulls == true) {
+      options.push(
+        <option key={"null"} value="" />
+      )
+    }
+
+    options = this.props.options.map(function (option, i) {
       var key = "option-" + option.label + "-" + i;
       if (typeof option === "string") {
         return (
@@ -37,6 +61,8 @@ var FormSelect = React.createClass({
         <option key={key} value={option.value}>{option.label}</option>
       )
     });
+
+    return options;
   },
 
   getStyle: function () {
@@ -58,6 +84,7 @@ var FormSelect = React.createClass({
     this.setState({
       isHovered: true,
       isFocused: this.state.isFocused,
+      allowNulls: this.state.allowNulls,
     });
   },
 
@@ -65,6 +92,7 @@ var FormSelect = React.createClass({
     this.setState({
       isHovered: false,
       isFocused: this.state.isFocused,
+      allowNulls: this.state.allowNulls,
     });
   },
 
@@ -72,6 +100,7 @@ var FormSelect = React.createClass({
     this.setState({
       isHovered: this.state.isHovered,
       isFocused: true,
+      allowNulls: this.state.allowNulls,
     });
   },
 

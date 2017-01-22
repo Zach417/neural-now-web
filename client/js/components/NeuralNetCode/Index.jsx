@@ -24,6 +24,14 @@ var Component = React.createClass({
     }.bind(this));
   },
 
+  componentWillReceiveProps: function (nextProps) {
+    NeuralNetworkStore.getOne(nextProps.name, function (neuralNetwork) {
+      var state = this.state;
+      state.neuralNetwork = neuralNetwork;
+      this.setState(state);
+    }.bind(this));
+  },
+
   componentDidMount: function () {
     Prism.highlightAll();
   },
@@ -40,17 +48,22 @@ var Component = React.createClass({
   },
 
   getMarkup: function () {
-    var name = this.getNeuralNetworkName();
-    var input = this.getNeuralNetworkInputString();
-    var code =
-      "var NeuralNow = require('neural-now');\n"
-      + "NeuralNow.get('" + name + "', function(neuralNet) {\n"
-      + "    " + input + "\n"
-      + "    var output = neuralNet.forward(input);\n"
-      + "});";
+    var code = "";
+    if (this.state.neuralNetwork.codeExample) {
+      code = this.state.neuralNetwork.codeExample;
+    } else {
+      var name = this.getNeuralNetworkName();
+      var input = this.getNeuralNetworkInputString();
+      code =
+        "var NeuralNow = require('neural-now');\n"
+        + "NeuralNow.get('" + name + "', function(neuralNet) {\n"
+        + "    " + input + "\n"
+        + "    var output = neuralNet.forward(input);\n"
+        + "});";
+    }
 
     return {
-      __html: Prism.highlight(code,Prism.languages.javascript)
+      __html: Prism.highlight(code, Prism.languages.javascript)
     };
   },
 
