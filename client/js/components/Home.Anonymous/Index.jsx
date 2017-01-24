@@ -24,7 +24,7 @@ var Component = React.createClass({
             </h3>
           </div>
         	<div className="col-lg-10 col-xs-12 col-centered">
-        		<NeuralNetCanvas name={"sine"} />
+        		<NeuralNetCanvas name={"math-sine"} />
         	</div>
           <div className="col-xs-12" style={{paddingBottom:"15px"}} />
         </div>
@@ -38,7 +38,7 @@ var Component = React.createClass({
             </p>
           </div>
           <div className="col-lg-10 col-xs-12 col-centered">
-            <NeuralNetCode name={"sine"} />
+            <NeuralNetCode name={"math-sine"} />
           </div>
           <div className="col-xs-12" style={{paddingBottom:"15px"}} />
         </div>
@@ -48,7 +48,7 @@ var Component = React.createClass({
             <p>{"Type in [[3.14]] below to test out the neural network 'sine'"}</p>
           </div>
 					<div className="col-lg-10 col-xs-12 col-centered">
-						<NeuralNetTest name={"sine"} />
+						<NeuralNetTest name={"math-sine"} />
 					</div>
           <div className="col-xs-12" style={{paddingBottom:"45px"}} />
 	      </div>

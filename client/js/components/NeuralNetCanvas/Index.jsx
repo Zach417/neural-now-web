@@ -82,7 +82,7 @@ var Component = React.createClass({
       state.neuralNetwork = setMaxLayerSize(this.props.neuralNetwork);
       this.setState(state);
     } else {
-      NeuralNetworkStore.getOne(this.props.name, function (neuralNetwork) {
+      NeuralNetworkStore.getOne(this.props.name, false, function (neuralNetwork) {
         var state = this.state;
         state.neuralNetwork = setMaxLayerSize(neuralNetwork);
         this.setState(state);
@@ -96,7 +96,7 @@ var Component = React.createClass({
       state.neuralNetwork = setMaxLayerSize(nextProps.neuralNetwork);
       this.setState(state);
     } else {
-      NeuralNetworkStore.getOne(nextProps.name, function (neuralNetwork) {
+      NeuralNetworkStore.getOne(nextProps.name, false, function (neuralNetwork) {
         var state = this.state;
         state.neuralNetwork = setMaxLayerSize(neuralNetwork);
         this.setState(state);

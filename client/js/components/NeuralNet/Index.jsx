@@ -21,7 +21,7 @@ var Component = React.createClass({
 	},
 
 	componentWillMount: function () {
-		NeuralNetworkStore.getOne(this.props.params.id, function (neuralNetwork) {
+		NeuralNetworkStore.getOne(this.props.params.id, false, function (neuralNetwork) {
 			var state = this.state;
 			state.neuralNetwork = neuralNetwork;
 			this.setState(state);

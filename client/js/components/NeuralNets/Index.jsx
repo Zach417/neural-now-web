@@ -15,7 +15,7 @@ var Component = React.createClass({
 	},
 
 	componentWillMount: function () {
-		NeuralNetworkStore.get(function (neuralNetworks) {
+		NeuralNetworkStore.get(false, function (neuralNetworks) {
 			var state = this.state;
 			state.neuralNetworks = neuralNetworks;
 			this.setState(state);

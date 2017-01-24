@@ -13,6 +13,7 @@ var NeuralNetworkStore = require('../../stores/NeuralNetworkStore');
 var Component = React.createClass({
   getInitialState: function () {
     return {
+      executing: false,
       area: 'vector',
       neuralNetwork: {
         name: "neural-network",
@@ -25,7 +26,7 @@ var Component = React.createClass({
   },
 
   componentWillMount: function () {
-    NeuralNetworkStore.getOne(this.props.name, function (neuralNetwork) {
+    NeuralNetworkStore.getOne(this.props.name, false, function (neuralNetwork) {
       var state = this.state;
       state.neuralNetwork = neuralNetwork;
 
@@ -41,7 +42,7 @@ var Component = React.createClass({
   },
 
   componentWillReceiveProps: function (nextProps) {
-    NeuralNetworkStore.getOne(nextProps.name, function (neuralNetwork) {
+    NeuralNetworkStore.getOne(nextProps.name, false, function (neuralNetwork) {
       var state = this.state;
       state.neuralNetwork = neuralNetwork;
 
@@ -56,10 +57,23 @@ var Component = React.createClass({
     }.bind(this));
   },
 
+  componentDidMount: function () {
+    Prism.highlightAll();
+  },
+
+  componentDidUpdate: function (prevProps, prevState) {
+    Prism.highlightAll();
+  },
+
   render: function () {
+    var consoleOutput = this.state.result;
+    if (this.state.executing) {
+      consoleOutput = "executing...";
+    }
+
     return (
       <div>
-        <Console result={this.state.result} />
+        <Console result={consoleOutput} />
         <Error message={this.state.error} />
         <div>
           <Menu
@@ -91,7 +105,7 @@ var Component = React.createClass({
 
   getNeuralNetworkInputString: function () {
     var input = "[[";
-    if (this.state.neuralNetwork.layers.length === 0) {
+    if (!this.state.neuralNetwork.layers || this.state.neuralNetwork.layers.length === 0) {
       return input + "]]";
     }
     for (var i = 0; i < this.state.neuralNetwork.layers[0].out_depth; i++) {
@@ -109,15 +123,19 @@ var Component = React.createClass({
     try {
       var input = JSON.parse(this.state.input);
       var name = this.state.neuralNetwork.name;
+      var state = this.state;
+      state.executing = true;
+      this.setState(state);
       NeuralNow.get(name, function (neuralNet) {
-        var state = this.state;
         state.result = neuralNet.forward(input).w;
         state.error = '';
+        state.executing = false;
         this.setState(state)
       }.bind(this));
     } catch (e) {
       var state = this.state;
       state.error = e.toString();
+      state.executing = false;
       this.setState(state);
     }
   },

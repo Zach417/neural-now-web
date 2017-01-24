@@ -7,44 +7,45 @@ function getCookie(name) {
 }
 
 function Slave(storeName) {
+  this.root = "http://api.neuralnow.com/" + storeName + "/";
+  //this.root = "http://localhost:8080/" + storeName + "/";
 
-    this.root = "http://api.neuralnow.com/" + storeName + "/";
-    //this.root = "http://localhost:8080/" + storeName + "/";
+  return {
+    get: function(params, callback) {
+      var url = this.root + "?" + params;
+      $.getJSON({
+          url: url,
+          success: function(data) {
+              callback(data);
+          },
+          beforeSend: function(xhr) {
+              xhr.setRequestHeader('email', getCookie("email"));
+              xhr.setRequestHeader('access-token', getCookie("accessToken"));
+          },
+          error: function(xhr, ajaxOptions, thrownError) {
+              console.log("XHR Status:", xhr.status);
+              console.log("Thrown Error:", thrownError);
+          }
+      });
+    }.bind(this),
 
-    return {
-        get: function(callback) {
-            $.getJSON({
-                url: this.root,
-                success: function(data) {
-                    callback(data);
-                },
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('email', getCookie("email"));
-                    xhr.setRequestHeader('access-token', getCookie("accessToken"));
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    console.log("XHR Status:", xhr.status);
-                    console.log("Thrown Error:", thrownError);
-                }
-            });
-        }.bind(this),
-
-        getOne: function(id, callback) {
-            $.getJSON({
-                url: this.root + id,
-                success: function(data) {
-                    callback(data);
-                },
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('email', getCookie("email"));
-                    xhr.setRequestHeader('access-token', getCookie("accessToken"));
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    console.log("XHR Status:", xhr.status);
-                    console.log("Thrown Error:", thrownError);
-                }
-            });
-        }.bind(this),
+    getOne: function(id, params, callback) {
+      var url = this.root + id + "?" + params;
+      $.getJSON({
+        url: url,
+        success: function(data) {
+          callback(data);
+        },
+        beforeSend: function(xhr) {
+          xhr.setRequestHeader('email', getCookie("email"));
+          xhr.setRequestHeader('access-token', getCookie("accessToken"));
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          console.log("XHR Status:", xhr.status);
+          console.log("Thrown Error:", thrownError);
+        }
+      });
+    }.bind(this),
 
         insert: function(doc, callback) {
             $.ajax({

@@ -14,7 +14,7 @@ var Component = React.createClass({
   },
 
   componentWillMount: function () {
-    NeuralNetworkStore.getOne(this.props.name, function (neuralNetwork) {
+    NeuralNetworkStore.getOne(this.props.name, false, function (neuralNetwork) {
       var state = this.state;
       state.neuralNetwork = neuralNetwork;
       this.setState(state);
@@ -22,7 +22,7 @@ var Component = React.createClass({
   },
 
   componentWillReceiveProps: function (nextProps) {
-    NeuralNetworkStore.getOne(nextProps.name, function (neuralNetwork) {
+    NeuralNetworkStore.getOne(nextProps.name, false, function (neuralNetwork) {
       var state = this.state;
       state.neuralNetwork = neuralNetwork;
       this.setState(state);
@@ -67,10 +67,9 @@ var Component = React.createClass({
   getNeuralNetworkInputString: function () {
     var input = "var input = [[";
     var net = this.state.neuralNetwork;
-    if (net.layers.length === 0) {
+    if (!net.layers || net.layers.length === 0) {
       return input + "]]; // set input values here";
     }
-
 
     for (var i = 0; i < net.layers[0].out_depth; i++) {
       if (i === net.layers[0].out_depth - 1) {

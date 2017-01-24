@@ -7,6 +7,33 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
+function getMetaParams () {
+  return "s=_id"
+    + "&s=name"
+    + "&s=description"
+    + "&s=inputType"
+    + "&s=outputDescription"
+    + "&s=codeExample"
+    + "&s=createdBy"
+    + "&s=createdOn"
+    + "&s=modifiedBy"
+    + "&s=modifiedOn";
+}
+
+function getAllParams () {
+  return "s=_id"
+    + "&s=name"
+    + "&s=description"
+    + "&s=inputType"
+    + "&s=outputDescription"
+    + "&s=codeExample"
+    + "&s=layers"
+    + "&s=createdBy"
+    + "&s=createdOn"
+    + "&s=modifiedBy"
+    + "&s=modifiedOn";
+}
+
 module.exports = function(ApiService) {
 
   this._docs = [];
@@ -20,9 +47,9 @@ module.exports = function(ApiService) {
         var request = this._requests[i];
 
         if (request.parameters["id"] && request.parameters["callback"]) {
-          request.execute(request.parameters["id"], request.parameters["callback"]);
+          request.execute(request.parameters["id"], request.parameters["allAttributes"], request.parameters["callback"]);
         } else if (request.parameters["callback"]) {
-          request.execute(request.parameters["callback"]);
+          request.execute(request.parameters["allAttributes"], request.parameters["callback"]);
         } else {
           request.execute();
         }
@@ -32,11 +59,16 @@ module.exports = function(ApiService) {
     }
   }
 
-  this.get = function(callback, refresh) {
+  this.get = function(allAttributes, callback, refresh) {
+    var params = getMetaParams();
+    if (allAttributes === true) {
+      params = getAllParams();
+    }
 
     if (this._refreshed === false || refresh === true) {
       if (this._ignore === true) {
         var parameters = [];
+        parameters["allAttributes"] = allAttributes;
         parameters["callback"] = callback;
 
         return this._requests.push({
@@ -47,7 +79,7 @@ module.exports = function(ApiService) {
         this._ignore = true;
       }
 
-      ApiService.get(function(docs) {
+      ApiService.get(params, function(docs) {
         this._ignore = false;
         this._docs = docs;
         this._refreshed = true;
@@ -60,12 +92,17 @@ module.exports = function(ApiService) {
     }
   }.bind(this);
 
-  this.getOne = function(id, callback, refresh) {
+  this.getOne = function(id, allAttributes, callback, refresh) {
+    var params = getMetaParams();
+    if (allAttributes === true) {
+      params = getAllParams();
+    }
 
     if (this._docs.length === 0 || refresh === true) {
       if (this._ignore === true) {
         var parameters = [];
         parameters["id"] = id;
+        parameters["allAttributes"] = allAttributes;
         parameters["callback"] = callback;
         return this._requests.push({
           execute: this.getOne,
@@ -75,7 +112,7 @@ module.exports = function(ApiService) {
         this._ignore = true;
       }
 
-      ApiService.get(function(docs) {
+      ApiService.get(params, function(docs) {
         this._ignore = false;
         this._docs = docs;
 
