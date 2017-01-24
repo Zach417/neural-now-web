@@ -8,10 +8,7 @@ var Component = React.createClass({
     return {
       neuralNetwork: {
         name: "neural-network",
-        input: {size: 0},
-        hidden: [],
-        output: {size: 0},
-        weights: [],
+        layers: [],
       },
     }
   },
@@ -69,8 +66,14 @@ var Component = React.createClass({
 
   getNeuralNetworkInputString: function () {
     var input = "var input = [[";
-    for (var i = 0; i < this.state.neuralNetwork.input.size; i++) {
-      if (i === this.state.neuralNetwork.input.size - 1) {
+    var net = this.state.neuralNetwork;
+    if (net.layers.length === 0) {
+      return input + "]]; // set input values here";
+    }
+
+
+    for (var i = 0; i < net.layers[0].out_depth; i++) {
+      if (i === net.layers[0].out_depth - 1) {
         input += "0"
       } else {
         input += "0,"

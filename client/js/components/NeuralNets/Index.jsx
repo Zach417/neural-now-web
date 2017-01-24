@@ -46,7 +46,7 @@ var Component = React.createClass({
 						<div style={{marginBottom:"15px"}} />
 					</div>
 					<div className="col-lg-10 col-xs-12 col-centered">
-		        <Griddle results={this.getGriddleData()} columns={["Name", "Size"]}
+		        <Griddle results={this.getGriddleData()} columns={["Name"]}
 		          resultsPerPage={20} onRowClick={this.handleClick_Row} />
 					</div>
 				</div>
@@ -58,10 +58,8 @@ var Component = React.createClass({
     var result = [];
     for (var i = 0; i < this.state.neuralNetworks.length; i++) {
 			var name = this.state.neuralNetworks[i].name;
-			var size = 2 + this.state.neuralNetworks[i].hidden.length;
       result.push({
         "Name": name,
-				"Size": size,
       });
     }
     return result;

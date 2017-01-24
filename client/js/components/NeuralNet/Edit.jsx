@@ -2,7 +2,7 @@ var React = require('react');
 var Link = require('react-router').Link;
 var browserHistory = require('react-router').browserHistory;
 var Griddle = require('griddle-react');
-var NeuralNetwork = require('neural-network').NeuralNetwork;
+var cnn = require('neural-now-cnn');
 var Style = require('./Style.jsx');
 var Form = require('../Form/Index.jsx');
 var Button = require('../Button/Index.jsx');
@@ -17,10 +17,7 @@ var Component = React.createClass({
       weightString: '[]',
 			neuralNetwork: {
         name: "new-neural-net",
-        input: {size: 1, activation: "linear"},
-        hidden: [],
-        output: {size: 1, activation: "sigmoid"},
-        weights: [],
+        layers: [],
       }
 		}
 	},
@@ -125,6 +122,9 @@ var Component = React.createClass({
 	},
 
 	getSettings: function () {
+		return (
+			<div className="col-lg-10 col-xs-12 col-centered" />
+		)
 		return (
 			<div className="col-lg-10 col-xs-12 col-centered">
 				<h3>Parameters</h3>

@@ -16,10 +16,7 @@ var Component = React.createClass({
       area: 'vector',
       neuralNetwork: {
         name: "neural-network",
-        input: {size: 0},
-        hidden: [],
-        output: {size: 0},
-        weights: [],
+        layers: [],
       },
       input: '',
       result: '',
@@ -94,8 +91,11 @@ var Component = React.createClass({
 
   getNeuralNetworkInputString: function () {
     var input = "[[";
-    for (var i = 0; i < this.state.neuralNetwork.input.size; i++) {
-      if (i === this.state.neuralNetwork.input.size - 1) {
+    if (this.state.neuralNetwork.layers.length === 0) {
+      return input + "]]";
+    }
+    for (var i = 0; i < this.state.neuralNetwork.layers[0].out_depth; i++) {
+      if (i === this.state.neuralNetwork.layers[0].out_depth - 1) {
         input += "0"
       } else {
         input += "0,"
@@ -111,7 +111,7 @@ var Component = React.createClass({
       var name = this.state.neuralNetwork.name;
       NeuralNow.get(name, function (neuralNet) {
         var state = this.state;
-        state.result = neuralNet.forward(input).tolist();
+        state.result = neuralNet.forward(input).w;
         state.error = '';
         this.setState(state)
       }.bind(this));

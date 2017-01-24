@@ -38,7 +38,7 @@ var Component = React.createClass({
     this.setState(state);
 
     var vector = NeuralNowUtils.Text.toBigramVector(value);
-    this.props.onChange(JSON.stringify([vector]));
+    this.props.onChange(JSON.stringify(vector));
   },
 });
 

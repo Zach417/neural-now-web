@@ -15,10 +15,7 @@ var Component = React.createClass({
 		return {
 			neuralNetwork: {
         name: "Loading...",
-        input: {size: 1, activation: "linear"},
-        hidden: [],
-        output: {size: 1, activation: "sigmoid"},
-        weights: [],
+        layers: [],
       }
 		}
 	},

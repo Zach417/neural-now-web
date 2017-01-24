@@ -4,47 +4,45 @@ var NeuralNetworkStore = require('../../stores/NeuralNetworkStore');
 
 function copyNeuralNetwork (neuralNetwork) {
   var nn = {
-    input: {},
-    hidden: [],
-    output: {},
-    weights: [],
+    layers: [],
   };
-  nn.input.size = neuralNetwork.input.size;
-  nn.input.activation = neuralNetwork.input.activation;
 
-  for (var i = 0; i < neuralNetwork.hidden.length; i++) {
-    nn.hidden.push({
-      size: neuralNetwork.hidden[i].size,
-      activation: neuralNetwork.hidden[i].activation,
-    });
-  }
+  // nn.input.size = neuralNetwork.input.size;
+  // nn.input.activation = neuralNetwork.input.activation;
+  //
+  // for (var i = 0; i < neuralNetwork.hidden.length; i++) {
+  //   nn.hidden.push({
+  //     size: neuralNetwork.hidden[i].size,
+  //     activation: neuralNetwork.hidden[i].activation,
+  //   });
+  // }
+  //
+  // nn.output.size = neuralNetwork.output.size;
+  // nn.output.activation = neuralNetwork.output.activation;
+  //
+  // for (var i = 0; i < neuralNetwork.weights.length; i++) {
+  //   nn.weights.push(neuralNetwork.weights[i]);
+  // }
 
-  nn.output.size = neuralNetwork.output.size;
-  nn.output.activation = neuralNetwork.output.activation;
-
-  for (var i = 0; i < neuralNetwork.weights.length; i++) {
-    nn.weights.push(neuralNetwork.weights[i]);
-  }
-
-  return nn;
+  return neuralNetwork;
 }
 
 function setMaxLayerSize (neuralNetwork) {
   var nn = copyNeuralNetwork(neuralNetwork);
 
-  if (nn.input.size > 50) {
-    nn.input.size = 50;
-  }
+  // if (nn.layers[0].out_depth > 50) {
+  //   nn.layers[0].out_depth = 50;
+  // }
 
-  if (nn.output.size > 50) {
-    nn.output.size = 50;
-  }
-
-  for (var i = 0; i < nn.hidden.length; i++) {
-    if (nn.hidden[i].size > 50) {
-      nn.hidden[i].size = 50;
-    }
-  }
+  // if (nn.output.size > 50) {
+  //   nn.output.size = 50;
+  // }
+  //
+  // for (var i = 0; i < nn.hidden.length; i++) {
+  //   if (nn.hidden[i].size > 50) {
+  //     nn.hidden[i].size = 50;
+  //   }
+  // }
 
   return nn;
 }
@@ -55,10 +53,7 @@ var Component = React.createClass({
       circleRadius: 40,
 			neuralNetwork: {
         name: "neural-network",
-        input: {size: 0},
-        hidden: [],
-        output: {size: 0},
-        weights: [],
+        layers: [],
       },
       canvas: {
         width: 1000,
@@ -110,6 +105,10 @@ var Component = React.createClass({
   },
 
   render: function() {
+    return (
+      <div id="neural-net-canvas" width="100%" height={this.state.canvas.height}>
+      </div>
+    );
     return (
       <div id="neural-net-canvas" width="100%" height={this.state.canvas.height}>
         <svg width={this.state.canvas.width} height={this.state.canvas.height} onMouseMove={this.handleMouseMove}>

@@ -42,10 +42,10 @@ var Routes = (
       <Route path="nav" component={Nav} />
   		<Route path="neuralnetwork">
         <IndexRoute component={NeuralNets} />
-  			<Route path="new" component={NeuralNetEdit} />
+        <Route path="new" component={NeuralNetEdit} />
   			<Route path=":id">
           <IndexRoute component={NeuralNet} />
-    			<Route path="edit" component={NeuralNetEdit} />
+          <Route path="edit" component={NeuralNetEdit} />
   		  </Route>
   		</Route>
     </Route>
