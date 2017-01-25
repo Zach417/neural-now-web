@@ -21,17 +21,7 @@ function getMetaParams () {
 }
 
 function getAllParams () {
-  return "s=_id"
-    + "&s=name"
-    + "&s=description"
-    + "&s=inputType"
-    + "&s=outputDescription"
-    + "&s=codeExample"
-    + "&s=layers"
-    + "&s=createdBy"
-    + "&s=createdOn"
-    + "&s=modifiedBy"
-    + "&s=modifiedOn";
+  return getMetaParams() + "&s=layers";
 }
 
 module.exports = function(ApiService) {
@@ -114,7 +104,7 @@ module.exports = function(ApiService) {
 
       ApiService.get(params, function(docs) {
         this._ignore = false;
-        this._docs = docs;
+        this._docs = [];
 
         var calledBack = false;
 
@@ -132,9 +122,27 @@ module.exports = function(ApiService) {
         this.executeRemainingRequests();
       }.bind(this));
     } else {
+      var doc;
       for (var i = 0; i < this._docs.length; i++) {
         if (this._docs[i].name == id) {
-          return callback(this._docs[i]);
+          doc = this._docs[i];
+        }
+      }
+
+      if (allAttributes === true && doc && !doc.layers) {
+        ApiService.getOne(id, params, function(doc) {
+          for (var i = 0; i < this._docs.length; i++) {
+            if (this._docs[i].name == id) {
+              this._docs[i].layers = doc.layers;
+              callback(doc);
+            }
+          }
+        }.bind(this));
+      } else {
+        for (var i = 0; i < this._docs.length; i++) {
+          if (this._docs[i].name == id) {
+            return callback(this._docs[i]);
+          }
         }
       }
     }

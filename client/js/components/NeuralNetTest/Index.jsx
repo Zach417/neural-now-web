@@ -1,7 +1,7 @@
 var React = require('react');
 var Link = require('react-router').Link;
 var Style = require('./Style.jsx');
-var NeuralNow = require('neural-now');
+var cnn = require('neural-now-cnn');
 var Menu = require('./Menu.jsx');
 var Console = require('./Console.jsx');
 var Error = require('./Error.jsx');
@@ -26,7 +26,7 @@ var Component = React.createClass({
   },
 
   componentWillMount: function () {
-    NeuralNetworkStore.getOne(this.props.name, false, function (neuralNetwork) {
+    NeuralNetworkStore.getOne(this.props.name, true, function (neuralNetwork) {
       var state = this.state;
       state.neuralNetwork = neuralNetwork;
 
@@ -42,7 +42,7 @@ var Component = React.createClass({
   },
 
   componentWillReceiveProps: function (nextProps) {
-    NeuralNetworkStore.getOne(nextProps.name, false, function (neuralNetwork) {
+    NeuralNetworkStore.getOne(nextProps.name, true, function (neuralNetwork) {
       var state = this.state;
       state.neuralNetwork = neuralNetwork;
 
@@ -126,12 +126,13 @@ var Component = React.createClass({
       var state = this.state;
       state.executing = true;
       this.setState(state);
-      NeuralNow.get(name, function (neuralNet) {
-        state.result = neuralNet.forward(input).w;
-        state.error = '';
-        state.executing = false;
-        this.setState(state)
-      }.bind(this));
+
+      var neuralNet = new cnn.net();
+      neuralNet.fromJSON(this.state.neuralNetwork);
+      state.result = neuralNet.forward(input).w;
+      state.error = '';
+      state.executing = false;
+      this.setState(state)
     } catch (e) {
       var state = this.state;
       state.error = e.toString();
