@@ -38,6 +38,7 @@ function setMaxLayerSize (neuralNetwork) {
 var Component = React.createClass({
   getInitialState: function() {
     return {
+      loading: false,
       circleRadius: 40,
 			neuralNetwork: {
         name: "neural-network",
@@ -65,13 +66,16 @@ var Component = React.createClass({
   },
 
   componentWillMount: function () {
+    var state = this.state;
     if (this.props.neuralNetwork) {
-      var state = this.state;
       state.neuralNetwork = setMaxLayerSize(this.props.neuralNetwork);
       this.setState(state);
     } else {
+      state.loading = true;
+      this.setState(state);
       NeuralNetworkStore.getOne(this.props.name, true, function (neuralNetwork) {
         var state = this.state;
+        state.loading = false;
         state.neuralNetwork = setMaxLayerSize(neuralNetwork);
         this.setState(state);
       }.bind(this));
@@ -79,13 +83,16 @@ var Component = React.createClass({
   },
 
   componentWillReceiveProps: function (nextProps) {
+    var state = this.state;
     if (nextProps.neuralNetwork) {
-      var state = this.state;
       state.neuralNetwork = setMaxLayerSize(nextProps.neuralNetwork);
       this.setState(state);
     } else {
+      state.loading = true;
+      this.setState(state);
       NeuralNetworkStore.getOne(nextProps.name, true, function (neuralNetwork) {
         var state = this.state;
+        state.loading = false;
         state.neuralNetwork = setMaxLayerSize(neuralNetwork);
         this.setState(state);
       }.bind(this));
@@ -93,6 +100,17 @@ var Component = React.createClass({
   },
 
   render: function() {
+    if (this.state.loading === true || !this.state.neuralNetwork.layers || this.state.neuralNetwork.layers.length === 0) {
+      return (
+        <div id="neural-net-canvas" width="100%" height={this.state.canvas.height}>
+          <svg width={this.state.canvas.width} height={this.state.canvas.height} onMouseMove={this.handleMouseMove}>
+            <rect width={this.state.canvas.width} height={this.state.canvas.height} fill="#272822" />
+            <text x="10" y="25" fill="white">Loading neural net weights...</text>
+          </svg>
+        </div>
+      )
+    }
+
     return (
       <div id="neural-net-canvas" width="100%" height={this.state.canvas.height}>
         <svg width={this.state.canvas.width} height={this.state.canvas.height} onMouseMove={this.handleMouseMove}>

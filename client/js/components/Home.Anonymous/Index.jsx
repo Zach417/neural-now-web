@@ -8,6 +8,20 @@ var NeuralNetTest = require('../NeuralNetTest/Index.jsx');
 var NeuralNetworkStore = require('../../stores/NeuralNetworkStore');
 
 var Component = React.createClass({
+	getInitialState: function () {
+		return {
+			neuralNetwork: {
+        name: "math-sine",
+        layers: [],
+      }
+		}
+	},
+
+	componentWillMount: function () {
+		this.setNeuralNetworkDetails();
+		this.setNeuralNetworkLayers();
+	},
+
   componentDidMount: function () {
     Prism.highlightAll();
   },
@@ -24,7 +38,7 @@ var Component = React.createClass({
             </h3>
           </div>
         	<div className="col-lg-10 col-xs-12 col-centered">
-        		<NeuralNetCanvas name={"math-sine"} />
+        		<NeuralNetCanvas neuralNetwork={this.state.neuralNetwork} />
         	</div>
           <div className="col-xs-12" style={{paddingBottom:"15px"}} />
         </div>
@@ -38,7 +52,7 @@ var Component = React.createClass({
             </p>
           </div>
           <div className="col-lg-10 col-xs-12 col-centered">
-            <NeuralNetCode name={"math-sine"} />
+            <NeuralNetCode neuralNetwork={this.state.neuralNetwork} />
           </div>
           <div className="col-xs-12" style={{paddingBottom:"15px"}} />
         </div>
@@ -48,7 +62,7 @@ var Component = React.createClass({
             <p>{"Type in [[3.14]] below to test out the neural network 'sine'"}</p>
           </div>
 					<div className="col-lg-10 col-xs-12 col-centered">
-						<NeuralNetTest name={"math-sine"} />
+						<NeuralNetTest neuralNetwork={this.state.neuralNetwork} />
 					</div>
           <div className="col-xs-12" style={{paddingBottom:"45px"}} />
 	      </div>
@@ -56,6 +70,36 @@ var Component = React.createClass({
 			</div>
     );
   },
+
+	setNeuralNetworkDetails: function () {
+		var success = function (neuralNetwork) {
+			var state = this.state;
+			Object.keys(neuralNetwork).forEach(function(key, index) {
+				state.neuralNetwork[key] = neuralNetwork[key];
+			});
+			this.setState(state);
+		}.bind(this);
+
+		NeuralNetworkStore.getOne({
+			id: this.state.neuralNetwork.name,
+			allAttributes: false,
+			success: success,
+		});
+	},
+
+	setNeuralNetworkLayers: function () {
+		var success = function (neuralNetwork) {
+			var state = this.state;
+			state.neuralNetwork.layers = neuralNetwork.layers;
+			this.setState(state);
+		}.bind(this);
+
+		NeuralNetworkStore.getOne({
+			id: this.state.neuralNetwork.name,
+			params: "s=layers",
+			success: success,
+		});
+	},
 });
 
 module.exports = Component;

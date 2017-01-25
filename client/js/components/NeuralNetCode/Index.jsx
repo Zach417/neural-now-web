@@ -14,19 +14,20 @@ var Component = React.createClass({
   },
 
   componentWillMount: function () {
-    NeuralNetworkStore.getOne(this.props.name, false, function (neuralNetwork) {
-      var state = this.state;
-      state.neuralNetwork = neuralNetwork;
+    var state = this.state;
+    if (this.props.neuralNetwork) {
+      state.neuralNetwork = this.props.neuralNetwork;
       this.setState(state);
-    }.bind(this));
+    } else if (this.props.name) {
+      state.neuralNetwork.name = this.props.name;
+      this.setState(state);
+      this.setNeuralNetworkDetails();
+    }
   },
 
   componentWillReceiveProps: function (nextProps) {
-    NeuralNetworkStore.getOne(nextProps.name, false, function (neuralNetwork) {
-      var state = this.state;
-      state.neuralNetwork = neuralNetwork;
-      this.setState(state);
-    }.bind(this));
+    this.props = nextProps;
+    this.componentWillMount();
   },
 
   componentDidMount: function () {
@@ -43,6 +44,14 @@ var Component = React.createClass({
       </pre>
     );
   },
+
+	setNeuralNetworkDetails: function () {
+		NeuralNetworkStore.getOne(this.state.neuralNetwork.name, false, function (neuralNetwork) {
+			var state = this.state;
+			state.neuralNetwork = neuralNetwork;
+			this.setState(state);
+		}.bind(this));
+	},
 
   getMarkup: function () {
     var code = "";

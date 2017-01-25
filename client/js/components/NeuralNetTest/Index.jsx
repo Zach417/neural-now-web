@@ -13,6 +13,7 @@ var NeuralNetworkStore = require('../../stores/NeuralNetworkStore');
 var Component = React.createClass({
   getInitialState: function () {
     return {
+      loading: false,
       executing: false,
       area: 'vector',
       neuralNetwork: {
@@ -26,35 +27,42 @@ var Component = React.createClass({
   },
 
   componentWillMount: function () {
-    NeuralNetworkStore.getOne(this.props.name, true, function (neuralNetwork) {
-      var state = this.state;
-      state.neuralNetwork = neuralNetwork;
+    var state = this.state;
+    if (this.props.neuralNetwork) {
+      state.neuralNetwork = this.props.neuralNetwork;
 
-      if (neuralNetwork.inputType) {
-        state.area = neuralNetwork.inputType;
+      if (state.neuralNetwork.inputType) {
+        state.area = state.neuralNetwork.inputType;
       } else {
         state.area = "vector";
       }
 
-      state.input = this.getNeuralNetworkInputString();
+      state.input = this.getNeuralNetworkInputString(state);
       this.setState(state);
-    }.bind(this));
+    } else {
+      var state = this.state;
+      state.loading = true;
+      this.setState(state);
+      NeuralNetworkStore.getOne(this.props.name, true, function (neuralNetwork) {
+        state = this.state;
+        state.loading = false;
+        state.neuralNetwork = neuralNetwork;
+
+        if (neuralNetwork.inputType) {
+          state.area = neuralNetwork.inputType;
+        } else {
+          state.area = "vector";
+        }
+
+        state.input = this.getNeuralNetworkInputString(state);
+        this.setState(state);
+      }.bind(this));
+    }
   },
 
   componentWillReceiveProps: function (nextProps) {
-    NeuralNetworkStore.getOne(nextProps.name, true, function (neuralNetwork) {
-      var state = this.state;
-      state.neuralNetwork = neuralNetwork;
-
-      if (neuralNetwork.inputType) {
-        state.area = neuralNetwork.inputType;
-      } else {
-        state.area = "vector";
-      }
-
-      state.input = this.getNeuralNetworkInputString();
-      this.setState(state);
-    }.bind(this));
+    this.props = nextProps;
+    this.componentWillMount();
   },
 
   componentDidMount: function () {
@@ -66,6 +74,14 @@ var Component = React.createClass({
   },
 
   render: function () {
+    if (this.state.loading === true || !this.state.neuralNetwork.layers || this.state.neuralNetwork.layers.length === 0) {
+      return (
+        <div>
+          <Console result={"Loading neural net weights..."} />
+        </div>
+      )
+    }
+
     var consoleOutput = this.state.result;
     if (this.state.executing) {
       consoleOutput = "executing...";
@@ -103,13 +119,14 @@ var Component = React.createClass({
     }
   },
 
-  getNeuralNetworkInputString: function () {
+  getNeuralNetworkInputString: function (state) {
+    var net = state.neuralNetwork || this.state.neuralNetwork;
     var input = "[[";
-    if (!this.state.neuralNetwork.layers || this.state.neuralNetwork.layers.length === 0) {
+    if (!net.layers || net.layers.length === 0) {
       return input + "]]";
     }
-    for (var i = 0; i < this.state.neuralNetwork.layers[0].out_depth; i++) {
-      if (i === this.state.neuralNetwork.layers[0].out_depth - 1) {
+    for (var i = 0; i < net.layers[0].out_depth; i++) {
+      if (i === net.layers[0].out_depth - 1) {
         input += "0"
       } else {
         input += "0,"

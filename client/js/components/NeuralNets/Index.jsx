@@ -15,11 +15,17 @@ var Component = React.createClass({
 	},
 
 	componentWillMount: function () {
-		NeuralNetworkStore.get(false, function (neuralNetworks) {
+		var success = function (neuralNetworks) {
 			var state = this.state;
 			state.neuralNetworks = neuralNetworks;
 			this.setState(state);
-		}.bind(this));
+		}.bind(this);
+
+		NeuralNetworkStore.get({
+			refresh: true,
+			params: "s=name",
+			success: success,
+		});
 	},
 
   componentDidMount: function() {

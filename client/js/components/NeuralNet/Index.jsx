@@ -21,20 +21,12 @@ var Component = React.createClass({
 	},
 
 	componentWillMount: function () {
-		NeuralNetworkStore.getOne(this.props.params.id, false, function (neuralNetwork) {
-			var state = this.state;
-			state.neuralNetwork = neuralNetwork;
-			this.setState(state);
-		}.bind(this));
+		var state = this.state;
+		state.neuralNetwork.name = this.props.params.id;
+		this.setState(state);
+		this.setNeuralNetworkDetails();
+		this.setNeuralNetworkLayers();
 	},
-
-  componentDidMount: function() {
-    NeuralNetworkStore.addChangeListener(this.componentWillMount);
-  },
-
-  componentWillUnmount: function() {
-    NeuralNetworkStore.removeChangeListener(this.componentWillMount);
-  },
 
 	render: function (){
 		return (
@@ -48,14 +40,14 @@ var Component = React.createClass({
 					</div>
 					{this.getControls()}
         	<div className="col-lg-10 col-xs-12 col-centered">
-        		<NeuralNetCanvas name={this.state.neuralNetwork.name} />
+        		<NeuralNetCanvas neuralNetwork={this.state.neuralNetwork} />
 						<div style={{marginBottom: "25px"}} />
         	</div>
           <div className="col-lg-10 col-xs-12 col-centered">
 		        <p>
 		          {"This is how you can use this neural network in your project"}
 		        </p>
-            <NeuralNetCode name={this.state.neuralNetwork.name} />
+            <NeuralNetCode neuralNetwork={this.state.neuralNetwork} />
 						<div style={{marginBottom: "25px"}} />
           </div>
 					<div className="col-lg-10 col-xs-12 col-centered">
@@ -63,11 +55,41 @@ var Component = React.createClass({
 		          {"You can test out this neural network by inserting "}
 							{"the appropriate input below and clicking \"Run\""}
 		        </p>
-						<NeuralNetTest name={this.state.neuralNetwork.name} />
+						<NeuralNetTest neuralNetwork={this.state.neuralNetwork} />
 					</div>
 				</div>
 			</div>
 		);
+	},
+
+	setNeuralNetworkDetails: function () {
+		var success = function (neuralNetwork) {
+			var state = this.state;
+			Object.keys(neuralNetwork).forEach(function(key, index) {
+				state.neuralNetwork[key] = neuralNetwork[key];
+			});
+			this.setState(state);
+		}.bind(this);
+
+		NeuralNetworkStore.getOne({
+			id: this.state.neuralNetwork.name,
+			allAttributes: false,
+			success: success,
+		});
+	},
+
+	setNeuralNetworkLayers: function () {
+		var success = function (neuralNetwork) {
+			var state = this.state;
+			state.neuralNetwork.layers = neuralNetwork.layers;
+			this.setState(state);
+		}.bind(this);
+
+		NeuralNetworkStore.getOne({
+			id: this.state.neuralNetwork.name,
+			params: "s=layers",
+			success: success,
+		});
 	},
 
 	getControls: function () {
@@ -82,7 +104,7 @@ var Component = React.createClass({
 	},
 
 	handleClick_Edit: function () {
-		browserHistory.push("/neuralnetwork/" + this.props.params.id + "/edit");
+		browserHistory.push("/neuralnetwork/" + this.state.neuralNetwork.name + "/edit");
 	},
 
 	handleClick_Back: function () {
