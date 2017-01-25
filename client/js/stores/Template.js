@@ -50,6 +50,9 @@ module.exports = function(ApiService) {
   }
 
   this.get = function(allAttributes, callback, refresh) {
+    console.log("get");
+    console.log(allAttributes, callback, refresh);
+    console.log(this._ignore, this._docs.length);
     var params = getMetaParams();
     if (allAttributes === true) {
       params = getAllParams();
@@ -83,71 +86,54 @@ module.exports = function(ApiService) {
   }.bind(this);
 
   this.getOne = function(id, allAttributes, callback, refresh) {
+    console.log("getOne");
+    console.log(id, allAttributes, callback, refresh);
+    console.log(this._ignore, this._docs.length);
     var params = getMetaParams();
     if (allAttributes === true) {
       params = getAllParams();
     }
 
-    if (this._docs.length === 0 || refresh === true) {
-      if (this._ignore === true) {
-        var parameters = [];
-        parameters["id"] = id;
-        parameters["allAttributes"] = allAttributes;
-        parameters["callback"] = callback;
-        return this._requests.push({
-          execute: this.getOne,
-          parameters: parameters,
-        });
-      } else {
-        this._ignore = true;
-      }
-
-      ApiService.get(params, function(docs) {
-        this._ignore = false;
-        this._docs = [];
-
-        var calledBack = false;
-
+    if (this._docs.length === 0) {
+      ApiService.getOne(id, params, function (doc) {
+        this._docs.push(doc);
+        return callback(doc);
+      }.bind(this));
+    } else if (refresh === true) {
+      ApiService.getOne(id, params, function (doc) {
         for (var i = 0; i < this._docs.length; i++) {
           if (this._docs[i].name == id) {
-            callback(this._docs[i]);
-            calledBack = true;
+            this._docs[i] = doc;
+            return callback(doc);
           }
         }
-
-        if (!calledBack) {
-          callback({});
-        }
-
-        this.executeRemainingRequests();
+        this._docs.push(doc);
+        return callback(doc);
       }.bind(this));
     } else {
-      var doc;
       for (var i = 0; i < this._docs.length; i++) {
         if (this._docs[i].name == id) {
-          doc = this._docs[i];
-        }
-      }
-
-      if (allAttributes === true && doc && !doc.layers) {
-        ApiService.getOne(id, params, function(doc) {
-          for (var i = 0; i < this._docs.length; i++) {
-            if (this._docs[i].name == id) {
-              this._docs[i].layers = doc.layers;
-              callback(doc);
-            }
-          }
-        }.bind(this));
-      } else {
-        for (var i = 0; i < this._docs.length; i++) {
-          if (this._docs[i].name == id) {
+          if (allAttributes && this._docs[i].layers) {
+            return callback(this._docs[i]);
+          } else if (!allAttributes) {
             return callback(this._docs[i]);
           }
         }
       }
+
+      ApiService.getOne(id, params, function (doc) {
+        for (var i = 0; i < this._docs.length; i++) {
+          if (this._docs[i].name == id) {
+            this._docs[i] = doc;
+            return callback(doc);
+          }
+        }
+        this._docs.push(doc);
+        return callback(doc);
+      }.bind(this));
     }
   }.bind(this);
-
+  
   this.Store = assign({}, EventEmitter.prototype, {
     get: this.get,
     getOne: this.getOne,
