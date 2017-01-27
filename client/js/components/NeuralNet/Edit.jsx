@@ -24,14 +24,11 @@ var Component = React.createClass({
 	},
 
 	componentWillMount: function () {
-    if (this.props.params && this.props.params.id) {
-  		NeuralNetworkStore.getOne(this.props.params.id, false, function (neuralNetwork) {
-  			var state = this.state;
-        state.layersString = JSON.stringify(neuralNetwork.layers);
-  			state.neuralNetwork = neuralNetwork;
-  			this.setState(state);
-  		}.bind(this));
-    }
+		var state = this.state;
+		state.neuralNetwork.name = this.props.params.id;
+		this.setState(state);
+		this.setNeuralNetworkDetails();
+		this.setNeuralNetworkLayers();
 	},
 
   componentDidMount: function() {
@@ -111,6 +108,36 @@ var Component = React.createClass({
 				</div>
 			</div>
 		);
+	},
+
+	setNeuralNetworkDetails: function () {
+		var success = function (neuralNetwork) {
+			var state = this.state;
+			Object.keys(neuralNetwork).forEach(function(key, index) {
+				state.neuralNetwork[key] = neuralNetwork[key];
+			});
+			this.setState(state);
+		}.bind(this);
+
+		NeuralNetworkStore.getOne({
+			id: this.state.neuralNetwork.name,
+			allAttributes: false,
+			success: success,
+		});
+	},
+
+	setNeuralNetworkLayers: function () {
+		var success = function (neuralNetwork) {
+			var state = this.state;
+			state.neuralNetwork.layers = neuralNetwork.layers;
+			this.setState(state);
+		}.bind(this);
+
+		NeuralNetworkStore.getOne({
+			id: this.state.neuralNetwork.name,
+			params: "s=layers",
+			success: success,
+		});
 	},
 
 	getControls: function () {
