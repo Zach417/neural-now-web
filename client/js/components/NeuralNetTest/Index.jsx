@@ -136,6 +136,26 @@ var Component = React.createClass({
     return input;
   },
 
+  yHatToOutputString: function (output) {
+    var net = this.state.neuralNetwork;
+    var result = [];
+    if (output.length > 0 && net.outputClasses.length > 0) {
+      for (var i = 0; i < output.length; i++) {
+        result.push({
+          class: net.outputClasses[i],
+          prediction: output[i],
+        });
+      }
+      // descending
+      result.sort(function (a, b) {
+        return b.prediction - a.prediction;
+      });
+      return JSON.stringify(result);
+    } else {
+      return output;
+    }
+  },
+
   handleClick: function () {
     try {
       var input = JSON.parse(this.state.input);
@@ -146,7 +166,8 @@ var Component = React.createClass({
 
       var neuralNet = new cnn.net();
       neuralNet.fromJSON(this.state.neuralNetwork);
-      state.result = neuralNet.forward(input).w;
+      var yHat = neuralNet.forward(input).w;
+      state.result = this.yHatToOutputString(yHat);
       state.error = '';
       state.executing = false;
       this.setState(state)

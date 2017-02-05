@@ -16,6 +16,7 @@ var Component = React.createClass({
 	getInitialState: function () {
 		return {
 			layersString: '[]',
+			outputClassesString: '[]',
 			neuralNetwork: {
         name: "new-neural-net",
         layers: [],
@@ -95,6 +96,12 @@ var Component = React.createClass({
 								onChange={this.handleChange_Attribute} />
 						</div>
 						<div className="col-xs-12">
+							<Form.Label label={"Output Classes"} />
+							<Form.TextArea
+								value={this.state.outputClassesString}
+								onChange={this.handleChange_OutputClasses} />
+						</div>
+						<div className="col-xs-12">
 							<Form.Label label={"Code Example"} />
 							<Form.TextArea
 								value={this.state.neuralNetwork.codeExample}
@@ -113,6 +120,7 @@ var Component = React.createClass({
 	setNeuralNetworkDetails: function () {
 		var success = function (neuralNetwork) {
 			var state = this.state;
+			state.outputClassesString = JSON.stringify(neuralNetwork.outputClasses);
 			Object.keys(neuralNetwork).forEach(function(key, index) {
 				state.neuralNetwork[key] = neuralNetwork[key];
 			});
@@ -173,6 +181,26 @@ var Component = React.createClass({
 		var state = this.state;
 		state.neuralNetwork[attribute] = value;
 		this.setState(state);
+	},
+
+	handleChange_OutputClasses: function (value) {
+    var isJson = true;
+    try {
+        JSON.parse(value);
+    } catch (e) {
+        isJson = false;
+    }
+
+    if (isJson === true) {
+      var state = this.state;
+      state.outputClassesString = value;
+      state.neuralNetwork.outputClasses = JSON.parse(value);
+      this.setState(state);
+    } else {
+      var state = this.state;
+      state.outputClassesString = value;
+      this.setState(state);
+    }
 	},
 
   handleClick_Save: function () {

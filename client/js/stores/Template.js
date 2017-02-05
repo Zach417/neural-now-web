@@ -21,6 +21,7 @@ module.exports = function(ApiService) {
       + "&s=description"
       + "&s=inputType"
       + "&s=outputDescription"
+      + "&s=outputClasses"
       + "&s=codeExample"
       + "&s=createdBy"
       + "&s=createdOn"
