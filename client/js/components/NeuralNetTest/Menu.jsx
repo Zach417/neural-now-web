@@ -47,7 +47,7 @@ var Component = React.createClass({
 
       }
 
-      if (item !== "Vector" && type !== item.toLowerCase()) {
+      if (type !== item.toLowerCase()) {
         style.color = "grey";
       } else {
         style.cursor = "pointer";

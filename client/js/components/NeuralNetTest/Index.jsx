@@ -7,6 +7,7 @@ var Console = require('./Console.jsx');
 var Error = require('./Error.jsx');
 var Vector = require('./Vector.jsx');
 var Text = require('./Text.jsx');
+var Image = require('./Image.jsx');
 var Button = require('../Button/Index.jsx');
 var NeuralNetworkStore = require('../../stores/NeuralNetworkStore');
 
@@ -114,6 +115,8 @@ var Component = React.createClass({
         return (<Vector input={this.state.input} onChange={this.handleChange_SubComponent} />);
       case "text":
         return (<Text input={this.state.input} onChange={this.handleChange_SubComponent} />);
+      case "image":
+        return (<Image input={this.state.input} neuralNetwork={this.state.neuralNetwork} onChange={this.handleChange_SubComponent} />);
       default:
         return (<Vector input={this.state.input} onChange={this.handleChange_SubComponent} />);
     }
@@ -143,7 +146,7 @@ var Component = React.createClass({
       for (var i = 0; i < output.length; i++) {
         result.push({
           class: net.outputClasses[i],
-          prediction: output[i],
+          prediction: Number(Number(output[i]).toFixed(2)),
         });
       }
       // descending
@@ -158,7 +161,12 @@ var Component = React.createClass({
 
   handleClick: function () {
     try {
-      var input = JSON.parse(this.state.input);
+      var input;
+      if (typeof this.state.input === 'string') {
+        input = JSON.parse(this.state.input);
+      } else {
+        input = this.state.input;
+      }
       var name = this.state.neuralNetwork.name;
       var state = this.state;
       state.executing = true;
