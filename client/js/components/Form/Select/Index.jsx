@@ -15,13 +15,21 @@ var FormSelect = React.createClass({
       var state = this.state;
       state.allowNulls = false;
       this.setState(state);
+    } else {
+      var state = this.state;
+      state.allowNulls = true;
+      this.setState(state);
     }
   },
 
   componentWillReceiveProps: function (nextProps) {
-    if (this.props.allowNulls != '' && nextProps.allowNulls === false) {
+    if (nextProps.allowNulls != '' && nextProps.allowNulls === false) {
       var state = this.state;
       state.allowNulls = false;
+      this.setState(state);
+    } else {
+      var state = this.state;
+      state.allowNulls = true;
       this.setState(state);
     }
   },
@@ -44,12 +52,6 @@ var FormSelect = React.createClass({
   getOptions: function () {
     var options = [];
 
-    if (this.state.allowNulls == true) {
-      options.push(
-        <option key={"null"} value="" />
-      )
-    }
-
     options = this.props.options.map(function (option, i) {
       var key = "option-" + option.label + "-" + i;
       if (typeof option === "string") {
@@ -61,6 +63,12 @@ var FormSelect = React.createClass({
         <option key={key} value={option.value}>{option.label}</option>
       )
     });
+
+    if (this.state.allowNulls == true) {
+      options.unshift(
+        <option key={"option-null"} value=""></option>
+      )
+    }
 
     return options;
   },

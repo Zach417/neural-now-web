@@ -30,14 +30,25 @@ var Component = React.createClass({
       var pixels = imageData.data;
 
       var net = this.props.neuralNetwork;
-      NeuralNowUtils.Image.resizeToVector({
-        size: [net.layers[0].out_sx, net.layers[0].out_sy, net.layers[0].out_depth],
-        fromSize: [canvas.width, canvas.height],
-        data: pixels,
-        callback: function (vol) {
-          this.props.onChange(vol);
-        }.bind(this),
-      });
+      if (!net.type || net.type == "convnetjs") {
+        NeuralNowUtils.Image.resizeToVector({
+          size: [net.layers[0].out_sx, net.layers[0].out_sy, net.layers[0].out_depth],
+          fromSize: [canvas.width, canvas.height],
+          data: pixels,
+          callback: function (vol) {
+            this.props.onChange(vol);
+          }.bind(this),
+        });
+      } else {
+        NeuralNowUtils.Image.resizeToVector({
+          size: [256, 256, 3],
+          fromSize: [canvas.width, canvas.height],
+          data: pixels,
+          callback: function (vol) {
+            this.props.onChange(vol);
+          }.bind(this),
+        });
+      }
     }.bind(this);
     img.src = value;
 	},

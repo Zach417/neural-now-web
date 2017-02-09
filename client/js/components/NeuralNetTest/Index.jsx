@@ -1,6 +1,7 @@
 var React = require('react');
 var Link = require('react-router').Link;
 var Style = require('./Style.jsx');
+var NeuralNow = require('neural-now');
 var cnn = require('neural-now-cnn');
 var Menu = require('./Menu.jsx');
 var Console = require('./Console.jsx');
@@ -14,7 +15,7 @@ var NeuralNetworkStore = require('../../stores/NeuralNetworkStore');
 var Component = React.createClass({
   getInitialState: function () {
     return {
-      loading: false,
+      loading: true,
       executing: false,
       area: 'vector',
       neuralNetwork: {
@@ -38,6 +39,7 @@ var Component = React.createClass({
         state.area = "vector";
       }
 
+      state.loading = false;
       state.input = this.getNeuralNetworkInputString(state);
       this.setState(state);
     } else {
@@ -75,7 +77,7 @@ var Component = React.createClass({
   },
 
   render: function () {
-    if (this.state.loading === true || !this.state.neuralNetwork.layers || this.state.neuralNetwork.layers.length === 0) {
+    if (this.state.loading === true) {
       return (
         <div>
           <Console result={"Loading neural net weights..."} />
@@ -155,7 +157,7 @@ var Component = React.createClass({
       });
       return JSON.stringify(result);
     } else {
-      return output;
+      return JSON.stringify(output);
     }
   },
 
@@ -172,13 +174,25 @@ var Component = React.createClass({
       state.executing = true;
       this.setState(state);
 
-      var neuralNet = new cnn.net();
-      neuralNet.fromJSON(this.state.neuralNetwork);
-      var yHat = neuralNet.forward(input).w;
-      state.result = this.yHatToOutputString(yHat);
-      state.error = '';
-      state.executing = false;
-      this.setState(state)
+      var netType = this.state.neuralNetwork.type;
+      if (!netType || netType == "convnetjs") {
+        var neuralNet = new cnn.net();
+        neuralNet.fromJSON(this.state.neuralNetwork);
+        var vol = new cnn.vol(neuralNet.layers[0].out_sx, neuralNet.layers[0].out_sy, neuralNet.layers[0].out_depth, 0);
+        vol.w = input;
+        var yHat = neuralNet.forward(vol).w;
+        state.result = this.yHatToOutputString(yHat);
+        state.error = '';
+        state.executing = false;
+        this.setState(state)
+      } else if (netType == "caffe") {
+        NeuralNow.compute(this.state.neuralNetwork.name, input, function (output) {
+          state.result = this.yHatToOutputString(output);
+          state.error = '';
+          state.executing = false;
+          this.setState(state)
+        }.bind(this));
+      }
     } catch (e) {
       var state = this.state;
       state.error = e.toString();

@@ -19,6 +19,7 @@ module.exports = function(ApiService) {
     var params = "s=_id"
       + "&s=name"
       + "&s=description"
+      + "&s=type"
       + "&s=inputType"
       + "&s=outputDescription"
       + "&s=outputClasses"

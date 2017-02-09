@@ -80,6 +80,15 @@ var Component = React.createClass({
 								onChange={this.handleChange_Attribute} />
 						</div>
 						<div className="col-xs-12">
+							<Form.Label label={"Neural Net Type"} />
+							<Form.Select
+								allowNulls={true}
+								options={["convnetjs","caffe"]}
+								value={this.state.neuralNetwork.type}
+								attribute="type"
+								onChange={this.handleChange_Attribute} />
+						</div>
+						<div className="col-xs-12">
 							<Form.Label label={"Input Type"} />
 							<Form.Select
 								allowNulls={true}
