@@ -18,6 +18,8 @@ function copyNeuralNetwork (neuralNetwork) {
     }
   }
 
+  nn.type = neuralNetwork.type;
+
   return nn;
 }
 
@@ -83,23 +85,18 @@ var Component = React.createClass({
   },
 
   componentWillReceiveProps: function (nextProps) {
-    var state = this.state;
-    if (nextProps.neuralNetwork) {
-      state.neuralNetwork = setMaxLayerSize(nextProps.neuralNetwork);
-      this.setState(state);
-    } else {
-      state.loading = true;
-      this.setState(state);
-      NeuralNetworkStore.getOne(nextProps.name, true, function (neuralNetwork) {
-        var state = this.state;
-        state.loading = false;
-        state.neuralNetwork = setMaxLayerSize(neuralNetwork);
-        this.setState(state);
-      }.bind(this));
-    }
+    this.props = nextProps;
+    this.componentWillMount();
   },
 
   render: function() {
+    var netType = this.state.neuralNetwork.type;
+    if (netType && netType != "convnetjs") {
+      return (
+        <div></div>
+      );
+    }
+
     if (this.state.loading === true || !this.state.neuralNetwork.layers || this.state.neuralNetwork.layers.length === 0) {
       return (
         <div id="neural-net-canvas" width="100%" height={this.state.canvas.height}>

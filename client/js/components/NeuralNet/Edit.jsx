@@ -98,6 +98,21 @@ var Component = React.createClass({
 								onChange={this.handleChange_Attribute} />
 						</div>
 						<div className="col-xs-12">
+							<Form.Label label={"Input Size"} />
+							<Form.Input
+								value={this.state.inputSizeString}
+								onChange={this.handleChange_InputSize} />
+						</div>
+						<div className="col-xs-12">
+							<Form.Label label={"Input Normalized"} />
+							<Form.Select
+								allowNulls={true}
+								options={[{value:true, label:"true"},{value:false, label:"false"}]}
+								value={this.state.neuralNetwork.inputNormalized}
+								attribute="inputNormalized"
+								onChange={this.handleChange_Attribute} />
+						</div>
+						<div className="col-xs-12">
 							<Form.Label label={"Output Description"} />
 							<Form.TextArea
 								value={this.state.neuralNetwork.outputDescription}
@@ -130,6 +145,7 @@ var Component = React.createClass({
 		var success = function (neuralNetwork) {
 			var state = this.state;
 			state.outputClassesString = JSON.stringify(neuralNetwork.outputClasses);
+			state.inputSizeString = JSON.stringify(neuralNetwork.inputSize);
 			Object.keys(neuralNetwork).forEach(function(key, index) {
 				state.neuralNetwork[key] = neuralNetwork[key];
 			});
@@ -166,7 +182,13 @@ var Component = React.createClass({
 		)
 	},
 
-	handleChange_LayersString: function (value) {
+	handleChange_Attribute: function (attribute, value) {
+		var state = this.state;
+		state.neuralNetwork[attribute] = value;
+		this.setState(state);
+	},
+
+	handleChange_InputSize: function (value) {
     var isJson = true;
     try {
         JSON.parse(value);
@@ -176,20 +198,14 @@ var Component = React.createClass({
 
     if (isJson === true) {
       var state = this.state;
-      state.layersString = value;
-      state.neuralNetwork.layers = JSON.parse(value);
+      state.inputSizeString = value;
+      state.neuralNetwork.inputSize = JSON.parse(value);
       this.setState(state);
     } else {
       var state = this.state;
-      state.layersString = value;
+      state.inputSizeString = value;
       this.setState(state);
     }
-	},
-
-	handleChange_Attribute: function (attribute, value) {
-		var state = this.state;
-		state.neuralNetwork[attribute] = value;
-		this.setState(state);
 	},
 
 	handleChange_OutputClasses: function (value) {

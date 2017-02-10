@@ -162,6 +162,7 @@ var Component = React.createClass({
   },
 
   handleClick: function () {
+    var net = this.state.neuralNetwork;
     try {
       var input;
       if (typeof this.state.input === 'string') {
@@ -169,24 +170,24 @@ var Component = React.createClass({
       } else {
         input = this.state.input;
       }
-      var name = this.state.neuralNetwork.name;
+      var name = net.name;
       var state = this.state;
       state.executing = true;
       this.setState(state);
 
       var netType = this.state.neuralNetwork.type;
       if (!netType || netType == "convnetjs") {
-        var neuralNet = new cnn.net();
-        neuralNet.fromJSON(this.state.neuralNetwork);
-        var vol = new cnn.vol(neuralNet.layers[0].out_sx, neuralNet.layers[0].out_sy, neuralNet.layers[0].out_depth, 0);
+        var cnnNet = new cnn.net();
+        cnnNet.fromJSON(net);
+        var vol = new cnn.vol(net.inputSize[0], net.inputSize[1], net.inputSize[2], 0);
         vol.w = input;
-        var yHat = neuralNet.forward(vol).w;
+        var yHat = cnnNet.forward(vol).w;
         state.result = this.yHatToOutputString(yHat);
         state.error = '';
         state.executing = false;
         this.setState(state)
       } else if (netType == "caffe") {
-        NeuralNow.compute(this.state.neuralNetwork.name, input, function (output) {
+        NeuralNow.compute(net.name, input, function (output) {
           state.result = this.yHatToOutputString(output);
           state.error = '';
           state.executing = false;

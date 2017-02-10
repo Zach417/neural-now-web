@@ -16,24 +16,11 @@ module.exports = function(ApiService) {
       return opts.params;
     }
 
-    var params = "s=_id"
-      + "&s=name"
-      + "&s=description"
-      + "&s=type"
-      + "&s=inputType"
-      + "&s=outputDescription"
-      + "&s=outputClasses"
-      + "&s=codeExample"
-      + "&s=createdBy"
-      + "&s=createdOn"
-      + "&s=modifiedBy"
-      + "&s=modifiedOn";
-
-    if (opts.allAttributes === true) {
-      params += "&s=layers";
+    if (opts.allAttributes === false) {
+      return "s=!layers"
+    } else {
+      return "";
     }
-
-    return params;
   }.bind(this);
 
   this.get = function(opts) {

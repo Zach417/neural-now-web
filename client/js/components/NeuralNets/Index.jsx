@@ -23,7 +23,7 @@ var Component = React.createClass({
 
 		NeuralNetworkStore.get({
 			refresh: true,
-			params: "s=name",
+			params: "s=name&s=description&s=inputType",
 			success: success,
 		});
 	},
@@ -52,8 +52,11 @@ var Component = React.createClass({
 						<div style={{marginBottom:"15px"}} />
 					</div>
 					<div className="col-lg-10 col-xs-12 col-centered">
-		        <Griddle results={this.getGriddleData()} columns={["Name"]}
-		          resultsPerPage={20} onRowClick={this.handleClick_Row} />
+		        <Griddle
+							results={this.getGriddleData()}
+							columns={["Name", "Type", "Description"]}
+		          resultsPerPage={20}
+							onRowClick={this.handleClick_Row} />
 					</div>
 				</div>
 			</div>
@@ -64,8 +67,12 @@ var Component = React.createClass({
     var result = [];
     for (var i = 0; i < this.state.neuralNetworks.length; i++) {
 			var name = this.state.neuralNetworks[i].name;
+			var description = this.state.neuralNetworks[i].description;
+			var inputType = this.state.neuralNetworks[i].inputType;
       result.push({
         "Name": name,
+				"Type": inputType,
+				"Description": description
       });
     }
     return result;
