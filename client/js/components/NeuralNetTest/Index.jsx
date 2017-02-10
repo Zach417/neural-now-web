@@ -187,7 +187,6 @@ var Component = React.createClass({
         state.executing = false;
         this.setState(state)
       } else if (netType == "caffe") {
-        alert(input.length);
         NeuralNow.compute(net.name, input, function (output) {
           state.result = this.yHatToOutputString(output);
           state.error = '';
