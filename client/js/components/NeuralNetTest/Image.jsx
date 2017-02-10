@@ -36,7 +36,6 @@ var Component = React.createClass({
         data: pixels,
         normalize: net.inputNormalized,
         callback: function (vol) {
-          alert(vol.length);
           this.props.onChange(vol);
         }.bind(this),
       });
