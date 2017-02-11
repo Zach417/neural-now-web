@@ -126,9 +126,9 @@ var Component = React.createClass({
 
   getNeuralNetworkInputString: function (state) {
     var net = state.neuralNetwork || this.state.neuralNetwork;
-    var input = "[[";
+    var input = "[";
     if (!net.layers || net.layers.length === 0) {
-      return input + "]]";
+      return input + "]";
     }
     for (var i = 0; i < net.layers[0].out_depth; i++) {
       if (i === net.layers[0].out_depth - 1) {
@@ -137,7 +137,7 @@ var Component = React.createClass({
         input += "0,"
       }
     }
-    input += "]]"
+    input += "]"
     return input;
   },
 
@@ -145,7 +145,7 @@ var Component = React.createClass({
     var net = this.state.neuralNetwork;
     var result = [];
     if (output.length > 0 && net.outputClasses.length > 0) {
-      for (var i = 0; i < output.length; i++) {
+      for (var i = 0; i < net.outputClasses.length; i++) {
         result.push({
           class: net.outputClasses[i],
           prediction: Number(Number(output[i]).toFixed(2)),
@@ -155,7 +155,17 @@ var Component = React.createClass({
       result.sort(function (a, b) {
         return b.prediction - a.prediction;
       });
-      return JSON.stringify(result);
+
+      var n = 5;
+      topFive = [];
+      if (net.outputClasses.length < 5) {
+        n = net.outputClasses.length;
+      }
+      for (var i = 0; i < n; i++) {
+        topFive.push(result[i]);
+      }
+
+      return JSON.stringify(topFive);
     } else {
       return JSON.stringify(output);
     }
