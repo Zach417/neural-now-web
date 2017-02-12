@@ -10,6 +10,7 @@ var NeuralNetworkStore = require('../../stores/NeuralNetworkStore');
 var Component = React.createClass({
 	getInitialState: function () {
 		return {
+			loaded: false,
 			neuralNetworks: []
 		}
 	},
@@ -17,6 +18,7 @@ var Component = React.createClass({
 	componentWillMount: function () {
 		var success = function (neuralNetworks) {
 			var state = this.state;
+			state.loaded = true;
 			state.neuralNetworks = neuralNetworks;
 			this.setState(state);
 		}.bind(this);
@@ -27,14 +29,6 @@ var Component = React.createClass({
 			success: success,
 		});
 	},
-
-  componentDidMount: function() {
-    NeuralNetworkStore.addChangeListener(this.componentWillMount);
-  },
-
-  componentWillUnmount: function() {
-    NeuralNetworkStore.removeChangeListener(this.componentWillMount);
-  },
 
 	render: function () {
 		return (
@@ -51,16 +45,31 @@ var Component = React.createClass({
 						<Button.Primary label={"New Neural Network"} onClick={this.handleClick_New} />
 						<div style={{marginBottom:"15px"}} />
 					</div>
-					<div className="col-lg-10 col-xs-12 col-centered">
-		        <Griddle
-							results={this.getGriddleData()}
-							columns={["Name", "Type", "Description"]}
-		          resultsPerPage={20}
-							onRowClick={this.handleClick_Row} />
-					</div>
+					{this.getSearchComponent()}
 				</div>
 			</div>
 		);
+	},
+
+	getSearchComponent: function () {
+		var loaded = this.state.loaded;
+		if (loaded) {
+			return (
+				<div className="col-lg-10 col-xs-12 col-centered">
+					<Griddle
+						results={this.getGriddleData()}
+						columns={["Name", "Type", "Description"]}
+						resultsPerPage={20}
+						onRowClick={this.handleClick_Row} />
+				</div>
+			)
+		}
+
+		return (
+			<div className="col-lg-10 col-xs-12 col-centered">
+				{"Loading neural networks..."}
+			</div>
+		)
 	},
 
   getGriddleData: function () {

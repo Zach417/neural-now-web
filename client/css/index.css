@@ -1,4 +1,8 @@
 .col-centered {
-    float: none;
-    margin: 0 auto;
+  float: none;
+  margin: 0 auto;
+}
+
+.standard-row {
+  cursor: pointer;
 }

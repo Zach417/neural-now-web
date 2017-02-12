@@ -74,10 +74,10 @@ var Component = React.createClass({
   },
 
   getNeuralNetworkInputString: function () {
-    var input = "var input = [[";
+    var input = "var input = [";
     var net = this.state.neuralNetwork;
     if (!net.layers || net.layers.length === 0) {
-      return input + "]]; // set input values here";
+      return input + "]; // set input values here";
     }
 
     for (var i = 0; i < net.layers[0].out_depth; i++) {
@@ -87,7 +87,7 @@ var Component = React.createClass({
         input += "0,"
       }
     }
-    input += "]]; // set input values here"
+    input += "]; // set input values here"
     return input;
   },
 

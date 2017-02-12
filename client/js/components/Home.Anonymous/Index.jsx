@@ -59,7 +59,7 @@ var Component = React.createClass({
         <div className="row">
           <div className="col-lg-10 col-xs-12 col-centered">
             <h3>{"You can even test them out here on this website!"}</h3>
-            <p>{"Type in [[3.14]] below to test out the neural network 'sine'"}</p>
+            <p>{"Type in [3.14] below to test out the neural network 'sine'"}</p>
           </div>
 					<div className="col-lg-10 col-xs-12 col-centered">
 						<NeuralNetTest neuralNetwork={this.state.neuralNetwork} />
