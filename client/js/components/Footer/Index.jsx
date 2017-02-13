@@ -11,7 +11,7 @@ var Footer = React.createClass({
 					<div className="col-xs-12" style={{paddingTop:"15px"}} />
 					<div className="col-lg-10 col-xs-12 col-centered" style={Style.border}>
 						{"© Copyright " + new Date().getFullYear()}
-						{" Neural Now | zach@neuralnow.com | "}
+						{" Neural Now | za93@live.missouristate.edu | "}
 						{"417.849.3612 | Springfield, MO"}
         	</div>
 					<div className="col-lg-10 col-xs-12 col-centered">
