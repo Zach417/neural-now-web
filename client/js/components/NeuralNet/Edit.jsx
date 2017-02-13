@@ -15,7 +15,10 @@ var NeuralNetworkStore = require('../../stores/NeuralNetworkStore');
 var Component = React.createClass({
 	getInitialState: function () {
 		return {
+			paperString: '{}',
 			layersString: '[]',
+			authorsString: '[]',
+			filesString: '[]',
 			outputClassesString: '[]',
 			neuralNetwork: {
         name: "new-neural-net",
@@ -58,9 +61,6 @@ var Component = React.createClass({
       			<Button.Danger label="Delete" onClick={this.handleClick_Delete} />
     				<div style={{marginBottom:"15px"}} />
     			</div>
-        	<div className="col-lg-10 col-xs-12 col-centered">
-        		<NeuralNetCanvas neuralNetwork={this.state.neuralNetwork} />
-        	</div>
 				</div>
 				<div className="row">
 					<div className="col-lg-10 col-xs-12 col-centered">
@@ -78,6 +78,48 @@ var Component = React.createClass({
 								value={this.state.neuralNetwork.description}
 								attribute="description"
 								onChange={this.handleChange_Attribute} />
+						</div>
+						<div className="col-xs-12">
+							<Form.Label label={"Authors"} />
+							<Form.TextArea
+								value={this.state.authorsString}
+								attribute="authors"
+								onChange={this.handleChange_AttributeString} />
+						</div>
+						<div className="col-xs-12">
+							<Form.Label label={"Files"} />
+							<Form.TextArea
+								value={this.state.filesString}
+								attribute="files"
+								onChange={this.handleChange_AttributeString} />
+						</div>
+						<div className="col-xs-12">
+							<Form.Label label={"Date (String)"} />
+							<Form.Input
+								value={this.state.neuralNetwork.date}
+								attribute="date"
+								onChange={this.handleChange_Attribute} />
+						</div>
+						<div className="col-xs-12">
+							<Form.Label label={"Abstract"} />
+							<Form.TextArea
+								value={this.state.neuralNetwork.abstract}
+								attribute="abstract"
+								onChange={this.handleChange_Attribute} />
+						</div>
+						<div className="col-xs-12">
+							<Form.Label label={"Github URL"} />
+							<Form.Input
+								value={this.state.neuralNetwork.github}
+								attribute="github"
+								onChange={this.handleChange_Attribute} />
+						</div>
+						<div className="col-xs-12">
+							<Form.Label label={"Paper"} />
+							<Form.Input
+								value={this.state.paperString}
+								attribute="paper"
+								onChange={this.handleChange_AttributeString} />
 						</div>
 						<div className="col-xs-12">
 							<Form.Label label={"Neural Net Type"} />
@@ -101,7 +143,8 @@ var Component = React.createClass({
 							<Form.Label label={"Input Size"} />
 							<Form.Input
 								value={this.state.inputSizeString}
-								onChange={this.handleChange_InputSize} />
+								attribute="inputSize"
+								onChange={this.handleChange_AttributeString} />
 						</div>
 						<div className="col-xs-12">
 							<Form.Label label={"Input Normalized"} />
@@ -123,7 +166,8 @@ var Component = React.createClass({
 							<Form.Label label={"Output Classes"} />
 							<Form.TextArea
 								value={this.state.outputClassesString}
-								onChange={this.handleChange_OutputClasses} />
+								attribute="outputClasses"
+								onChange={this.handleChange_AttributeString} />
 						</div>
 						<div className="col-xs-12">
 							<Form.Label label={"Code Example"} />
@@ -144,6 +188,9 @@ var Component = React.createClass({
 	setNeuralNetworkDetails: function () {
 		var success = function (neuralNetwork) {
 			var state = this.state;
+			state.paperString = JSON.stringify(neuralNetwork.paper);
+			state.authorsString = JSON.stringify(neuralNetwork.authors);
+			state.filesString = JSON.stringify(neuralNetwork.files);
 			state.outputClassesString = JSON.stringify(neuralNetwork.outputClasses);
 			state.inputSizeString = JSON.stringify(neuralNetwork.inputSize);
 			Object.keys(neuralNetwork).forEach(function(key, index) {
@@ -188,7 +235,7 @@ var Component = React.createClass({
 		this.setState(state);
 	},
 
-	handleChange_InputSize: function (value) {
+	handleChange_AttributeString: function (attribute, value) {
     var isJson = true;
     try {
         JSON.parse(value);
@@ -198,32 +245,12 @@ var Component = React.createClass({
 
     if (isJson === true) {
       var state = this.state;
-      state.inputSizeString = value;
-      state.neuralNetwork.inputSize = JSON.parse(value);
+      state[attribute + "String"] = value;
+      state.neuralNetwork[attribute] = JSON.parse(value);
       this.setState(state);
     } else {
       var state = this.state;
-      state.inputSizeString = value;
-      this.setState(state);
-    }
-	},
-
-	handleChange_OutputClasses: function (value) {
-    var isJson = true;
-    try {
-        JSON.parse(value);
-    } catch (e) {
-        isJson = false;
-    }
-
-    if (isJson === true) {
-      var state = this.state;
-      state.outputClassesString = value;
-      state.neuralNetwork.outputClasses = JSON.parse(value);
-      this.setState(state);
-    } else {
-      var state = this.state;
-      state.outputClassesString = value;
+      state[attribute + "String"] = value;
       this.setState(state);
     }
 	},
