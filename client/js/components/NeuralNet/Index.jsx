@@ -28,9 +28,9 @@ var Component = React.createClass({
 					<div style={{marginBottom:"25px"}} />
 					{this.getFiles(this.state)}
 					<div style={{marginBottom:"25px"}} />
-					{this.getCode(this.state)}
-					<div style={{marginBottom:"25px"}} />
 					{this.getTest(this.state)}
+					<div style={{marginBottom:"25px"}} />
+					{this.getCode(this.state)}
 				</div>
 			</div>
 		);

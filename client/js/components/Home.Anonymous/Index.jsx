@@ -31,24 +31,31 @@ var Component = React.createClass({
     	<div className="container-fluid" style={Style.container}>
 	    	<div className="row">
           <div className="col-lg-10 col-xs-12 col-centered">
-            <h1>{"Deploy someone else's neural network"}</h1>
+            <h1>{"Explore pre-trained, deep neural networks"}</h1>
             <h3>
-              {"Search for models that meet your needs and "}
-              {"use them for free!"}
+              {"Models from published, peer-reviewed papers \
+								as well as other meaningful networks"}
             </h3>
           </div>
         	<div className="col-lg-10 col-xs-12 col-centered">
         		<NeuralNetCanvas neuralNetwork={this.state.neuralNetwork} />
+						<div style={{color:"#999",fontStyle:"italic"}}>
+							{"This simple model approximates \
+								the trigonometric function, sine."}
+						</div>
         	</div>
           <div className="col-xs-12" style={{paddingBottom:"15px"}} />
         </div>
         <div className="row" style={{backgroundColor: "#1487BF", color: "white"}}>
           <div className="col-xs-12" style={{paddingTop:"15px"}} />
         	<div className="col-lg-10 col-xs-12 col-centered">
-            <h3>{"Get up and running quickly with npm.js"}</h3>
+            <h3>
+							{"Models are accessible via a web API \
+								cuz why not"}
+						</h3>
             <p>
-              {"NeuralNow.get() is all you need to deploy any "}
-              {"of the our most powerful neural networks. "}
+              {"Make requests to api.neuralnow.com or use the \
+								npm package"}
             </p>
           </div>
           <div className="col-lg-10 col-xs-12 col-centered">
@@ -58,8 +65,11 @@ var Component = React.createClass({
         </div>
         <div className="row">
           <div className="col-lg-10 col-xs-12 col-centered">
-            <h3>{"You can even test them out here on this website!"}</h3>
-            <p>{"Type in [3.14] below to test out the neural network 'sine'"}</p>
+            <h3>{"Test everything out in the playground area"}</h3>
+            <p>
+							{"Type in [3.14] below to test out the neural \
+								network 'math-sine'"}
+						</p>
           </div>
 					<div className="col-lg-10 col-xs-12 col-centered">
 						<NeuralNetTest neuralNetwork={this.state.neuralNetwork} />
