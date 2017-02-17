@@ -16,6 +16,8 @@ var NeuralNet = require('./components/NeuralNet/Index.jsx');
 var NeuralNetNew = require('./components/NeuralNet/New.jsx');
 var NeuralNetEdit = require('./components/NeuralNet/Edit.jsx');
 var NeuralNets = require('./components/NeuralNets/Index.jsx');
+var Games = require('./components/Games/Index.jsx');
+var Pacman = require('./components/Pacman/Index.jsx');
 
 function scrollToTop () {
     window.scrollTo(0, 0);
@@ -40,6 +42,10 @@ var Routes = (
       <Route path="docs" component={Docs} />
       <Route path="about" component={About} />
       <Route path="nav" component={Nav} />
+      <Route path="games">
+        <IndexRoute component={Games} />
+        <Route path="pacman" component={Pacman} />
+      </Route>
   		<Route path="neuralnetwork">
         <IndexRoute component={NeuralNets} />
         <Route path="new" component={NeuralNetEdit} />

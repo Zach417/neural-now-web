@@ -15,6 +15,9 @@ var Component = React.createClass({
             <Link to="/neuralnetwork" style={Style.item}>Models</Link>
           </div>
 					<div className="col-xs-12">
+            <Link to="/games" style={Style.item}>Games</Link>
+          </div>
+					<div className="col-xs-12">
             <Link to="/about" style={Style.item}>About</Link>
           </div>
 					<div className="col-xs-12">

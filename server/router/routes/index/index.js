@@ -5,6 +5,7 @@ var path = require('path');
 var _root = '/../../../../client/';
 
 router.use('/js', require('./js'));
+router.use('/iframes', require('./iframes'));
 router.use('/css', require('./css'));
 router.use('/img', require('./img'));
 router.use('/favicon.ico', require('./favicon'));
