@@ -60,7 +60,7 @@ module.exports = function (value, component) {
   var brain = component.state.brain;
   var learn = function () { };
 
-  num_actions = 4;
+  num_actions = 5; // do nothing, up, right, down, left
   num_inputs = 1500;
 
   try {
@@ -71,26 +71,41 @@ module.exports = function (value, component) {
     maze.onStep = function () {
       var pacman = iFrameWindow.maze.pacman;
       var mazeState = getMazeState();
+      brain.learning = (state.type === "training");
       var action = learn(mazeState, pacman.score);
-      if (action === 0) {
-        pacman.setDir(-1,0); // LEFT_ARROW
-      } else if (action === 1) {
-        pacman.setDir(1,0); // RIGHT_ARROW
-      } else if (action === 2) {
-        pacman.setDir(0,1); // DOWN_ARROW
-      } else if (action === 3) {
+
+      var newState = component.state;
+      newState.action = action;
+      newState.score = pacman.score;
+      component.setState(newState);
+
+      if (action === 1) {
         pacman.setDir(0,-1); // UP_ARROW
+      } else if (action === 2) {
+        pacman.setDir(1,0); // RIGHT_ARROW
+      } else if (action === 3) {
+        pacman.setDir(0,1); // DOWN_ARROW
+      } else if (action === 4) {
+        pacman.setDir(-1,0); // LEFT_ARROW
       }
     }
 
     maze.onDeath = function (score) {
       var maze = iFrameWindow.maze;
       maze.start();
+
+      var newState = component.state;
+      newState.generation++;
+      component.setState(newState);
     }
 
     maze.onVictory = function (score) {
       var maze = iFrameWindow.maze;
       maze.start();
+
+      var newState = component.state;
+      newState.generation++;
+      component.setState(newState);
     }
   } catch (ex) {
     state.error = ex.message;

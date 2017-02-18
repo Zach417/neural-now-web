@@ -5,7 +5,16 @@ var DeepQLearn = require('./deepqlearn.js');
 
 var Component = React.createClass({
   getInitialState: function () {
-    return { loaded: false, model: '', error: '', brain: {} }
+    return {
+      loaded: false,
+      model: '',
+      error: '',
+      brain: {},
+      type: "training",
+      action: 0,
+      score: 0,
+      generation: 0,
+    }
   },
 
   componentWillMount: function () {
@@ -26,6 +35,8 @@ var Component = React.createClass({
   		        {this.getModel(this.state, this.handleEvent_Model)}
   		        {this.getError(this.state)}
   		        {this.getControls(this.state, this.handleEvent_Controls)}
+              <div style={{marginBottom:"15px"}} className="col-lg-6 col-xs-12" />
+              {this.getOutput(this.state)}
             </div>
           </div>
 				</div>
@@ -39,6 +50,7 @@ var Component = React.createClass({
 	getError: require('./get/error.jsx'),
 	getModel: require('./get/model.jsx'),
 	getControls: require('./get/controls.jsx'),
+	getOutput: require('./get/output.jsx'),
 
 	// Functions that handle events from sub-components
 	handleEvent_Model: function (value) {
@@ -47,11 +59,13 @@ var Component = React.createClass({
 
 	handleEvent_Controls: function (e, value) {
     if (e == "handleClick_Apply") {
-		    require('./handle/handleClick_Apply.js') (value, this)
+		  require('./handle/handleClick_Apply.js') (value, this)
     } else if (e == "handleClick_Run") {
-		    require('./handle/handleClick_Run.js') (value, this)
+		  require('./handle/handleClick_Run.js') (value, this)
     } else if (e == "handleClick_Pause") {
-		    require('./handle/handleClick_Pause.js') (value, this)
+		  require('./handle/handleClick_Pause.js') (value, this)
+    } else if (e == "handleChange_Type") {
+		  require('./handle/handleChange_Type.js') (value, this)
     }
 	},
 });

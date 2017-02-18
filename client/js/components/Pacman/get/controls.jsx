@@ -16,8 +16,18 @@ module.exports = function (state, onEvent) {
     onEvent("handleClick_Pause", value);
   }
 
+  function handleChange_Type (value) {
+    onEvent("handleChange_Type", value);
+  }
+
   return (
     <div className="col-lg-6 col-xs-12">
+      <Form.Label label={"Learning Type"} />
+      <Form.Select
+        options={["training","testing"]}
+        value={state.type}
+        onChange={handleChange_Type} />
+      <div style={{marginBottom:"15px"}} />
       <Button.Primary label="Apply" onClick={handleClick_Apply} />
       <span style={{marginLeft:"15px"}} />
       <Button.Primary label="Run" onClick={handleClick_Run} />

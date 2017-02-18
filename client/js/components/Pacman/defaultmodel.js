@@ -1,5 +1,5 @@
 module.exports = "\
-var temporal_window = 3;\n\
+var temporal_window = 10;\n\
 var network_size = num_inputs * temporal_window + num_actions * temporal_window + num_inputs;\n\
 \n\
 var layer_defs = [];\n\
@@ -8,10 +8,10 @@ layer_defs.push({type:'fc', num_neurons: 5, activation:'relu'});\n\
 layer_defs.push({type: 'regression', num_neurons: num_actions});\n\
 \n\
 var tdtrainer_options = {\n\
-    learning_rate: 0.001,\n\
-    momentum: 0.0,\n\
-    batch_size: 64,\n\
-    l2_decay: 0.01\n\
+  learning_rate: 0.001,\n\
+  momentum: 0.0,\n\
+  batch_size: 64,\n\
+  l2_decay: 0.01\n\
 };\n\
 \n\
 var opt = {};\n\
@@ -26,11 +26,10 @@ opt.epsilon_test_time = 0.0;\n\
 opt.layer_defs = layer_defs;\n\
 opt.tdtrainer_options = tdtrainer_options;\n\
 \n\
-{\n\
-  brain = new deepqlearn.Brain(num_inputs, num_actions, opt);\n\
-  learn = function (state, lastReward) {\n\
-      brain.backward(lastReward);\n\
-      var action = brain.forward(state);\n\
-      return action;\n\
-  }\n\
+// You must define these outputs in your model\n\
+brain = new deepqlearn.Brain(num_inputs, num_actions, opt);\n\
+learn = function (state, lastReward) {\n\
+  brain.backward(lastReward);\n\
+  var action = brain.forward(state);\n\
+  return action;\n\
 }";
