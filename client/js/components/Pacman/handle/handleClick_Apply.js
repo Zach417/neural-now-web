@@ -70,12 +70,16 @@ module.exports = function (value, component) {
     var lastReward = 0;
     maze.onStep = function () {
       var pacman = iFrameWindow.maze.pacman;
+      var reward = pacman.score - lastReward;
+      lastReward = pacman.score;
+
       var mazeState = getMazeState();
       brain.learning = (state.type === "training");
-      var action = learn(mazeState, pacman.score);
+      var action = learn(mazeState, reward);
 
       var newState = component.state;
       newState.action = action;
+      newState.reward = reward;
       newState.score = pacman.score;
       component.setState(newState);
 

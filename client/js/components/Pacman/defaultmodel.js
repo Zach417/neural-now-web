@@ -1,5 +1,5 @@
 module.exports = "\
-var temporal_window = 10;\n\
+var temporal_window = 3;\n\
 var network_size = num_inputs * temporal_window + num_actions * temporal_window + num_inputs;\n\
 \n\
 var layer_defs = [];\n\
@@ -8,8 +8,8 @@ layer_defs.push({type:'fc', num_neurons: 5, activation:'relu'});\n\
 layer_defs.push({type: 'regression', num_neurons: num_actions});\n\
 \n\
 var tdtrainer_options = {\n\
-  learning_rate: 0.001,\n\
-  momentum: 0.0,\n\
+  learning_rate: 0.01,\n\
+  momentum: 0.9,\n\
   batch_size: 64,\n\
   l2_decay: 0.01\n\
 };\n\

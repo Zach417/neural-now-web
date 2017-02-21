@@ -13,6 +13,7 @@ var Component = React.createClass({
       type: "training",
       action: 0,
       score: 0,
+      reward: 0,
       generation: 0,
     }
   },

@@ -23,6 +23,9 @@ module.exports = function (state) {
         {"Action: " + getActionString(state.action)}
       </div>
       <div>
+        {"Reward: " + state.reward}
+      </div>
+      <div>
         {"Score: " + state.score}
       </div>
       <div>
